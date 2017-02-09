@@ -1,10 +1,13 @@
 package br.com.m2msolutions.workerbilhetagem.models;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@XmlRootElement
+@XmlRootElement(name = "venda")
+@XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Venda {
 
@@ -40,6 +43,7 @@ public class Venda {
 	private String plataforma;
 	private String origemEmissao;
 	private String numeroNovoBilheteEmbarque;
+	private String codRetorno;
 
 	public String getIdLog() {
 		return idLog;
@@ -295,5 +299,13 @@ public class Venda {
 
 	public void setNumeroNovoBilheteEmbarque(String numeroNovoBilheteEmbarque) {
 		this.numeroNovoBilheteEmbarque = numeroNovoBilheteEmbarque;
+	}
+
+	public String getCodRetorno() {
+		return codRetorno;
+	}
+
+	public void setCodRetorno(String codRetorno) {
+		this.codRetorno = codRetorno;
 	}
 }

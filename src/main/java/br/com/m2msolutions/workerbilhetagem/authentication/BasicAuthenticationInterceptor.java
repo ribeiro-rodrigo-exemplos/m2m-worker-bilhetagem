@@ -3,7 +3,7 @@ package br.com.m2msolutions.workerbilhetagem.authentication;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
