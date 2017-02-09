@@ -10,6 +10,5 @@ public class M2mWorkerBilhetagemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(M2mWorkerBilhetagemApplication.class, args);
-
 	}
 }

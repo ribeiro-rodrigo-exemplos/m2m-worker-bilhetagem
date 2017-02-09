@@ -1,8 +1,6 @@
 package br.com.m2msolutions.workerbilhetagem.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -11,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,23 +25,28 @@ import br.com.m2msolutions.workerbilhetagem.parse.ParseXmlToListaVendas;
 public class BuscaVendasService {
 	private Logger LOGGER = LoggerFactory.getLogger(BuscaVendasService.class);
 
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	private String methodName = "buscaVendas";
 
 	@Autowired
 	private Config config;
 
-	@Scheduled(fixedRateString = "${schedule.timer}")
-	public void buscarVendasService() {
+	public void buscarVendas(Integer codConexao, String codEmpresa, String data, String hora) {
 		RestTemplate restTemplate = new RestTemplate();
 
 		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
 		interceptors.add(new BasicAuthenticationInterceptor(config.getUsernameRJ(), config.getPasswordRJ()));
 		restTemplate.setInterceptors(interceptors);
 
-		LOGGER.info("Data da Consulta: " + dateFormat.format(new Date()));
+		StringBuilder url = new StringBuilder();
 
-		String listaVendasXml = restTemplate.getForObject(Const.RjWebServiceUrl + "buscaVendas/2/P/170209/1200",
-				String.class);
+		url.append(Const.RjWebServiceUrl);
+		url.append(methodName + "/");
+		url.append(codConexao + "/");
+		url.append(codEmpresa + "/");
+		url.append(data + "/");
+		url.append(hora);
+
+		String listaVendasXml = restTemplate.getForObject(url.toString(), String.class);
 
 		try {
 			ListaVendas listaVendas = ParseXmlToListaVendas.parse(listaVendasXml);
