@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.m2msolutions.workerbilhetagem.authentication.BasicAuthenticationInterceptor;
@@ -30,7 +31,9 @@ public class BuscaVendasService {
 	@Autowired
 	private Config config;
 
-	public void buscarVendas(Integer codConexao, String codEmpresa, String data, String hora) {
+	public boolean buscarVendas(Integer codConexao, String codEmpresa, String data, String hora) {
+		boolean buscaCompleta = false;
+
 		RestTemplate restTemplate = new RestTemplate();
 
 		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
@@ -46,23 +49,29 @@ public class BuscaVendasService {
 		url.append(data + "/");
 		url.append(hora);
 
-		String listaVendasXml = restTemplate.getForObject(url.toString(), String.class);
-
 		try {
-			ListaVendas listaVendas = ParseXmlToListaVendas.parse(listaVendasXml);
+			String listaVendasXml = restTemplate.getForObject(url.toString(), String.class);
 
-			for (Venda venda : listaVendas.getListaVendas()) {
-				if (venda.getCodRetorno() != null) {
-					CodigoErroEnum erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
-					LOGGER.error("Error: " + erro);
+			try {
+				ListaVendas listaVendas = ParseXmlToListaVendas.parse(listaVendasXml);
+
+				for (Venda venda : listaVendas.getListaVendas()) {
+					if (venda.getCodRetorno() != null) {
+						CodigoErroEnum erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
+						LOGGER.error("Erro - " + erro);
+					}
 				}
+
+				buscaCompleta = true;
+				LOGGER.info(ParseListaVendasToJson.parse(listaVendas));
+
+			} catch (JAXBException e) {
+				LOGGER.error(e.toString());
 			}
-
-			LOGGER.info(ParseListaVendasToJson.parse(listaVendas));
-
-		} catch (JAXBException e) {
-			LOGGER.error(e.toString());
+		} catch (HttpClientErrorException ex) {
+			CodigoErroEnum erro = CodigoErroEnum.valueOf("Cod" + ex.getStatusCode());
+			LOGGER.error("Erro - " + erro);
 		}
-
+		return buscaCompleta;
 	}
 }

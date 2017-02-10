@@ -22,6 +22,6 @@ public class RealizarBuscaVendas {
 	@Scheduled(fixedRateString = "${schedule.timer}")
 	public void realizarBuscaVendas() {
 		LOGGER.info("Data da Consulta: " + dateFormat.format(new Date()));
-		buscaVendasService.buscarVendas(2, "P", "170209", "1400");
+		buscaVendasService.buscarVendas(2, "P", "170210", "0900");
 	}
 }

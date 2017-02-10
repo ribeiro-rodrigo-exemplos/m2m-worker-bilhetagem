@@ -2,7 +2,8 @@ package br.com.m2msolutions.workerbilhetagem.commom;
 
 public enum CodigoErroEnum {
 	Cod00("00", "Nenhum registro encontrado"), Cod01("01", "Erro ao consultar Web Service."), Cod03("03",
-			"Pesquisa com data inválida ou fora do período permitido.");
+			"Pesquisa com data inválida ou fora do período permitido."), Cod404("404",
+					"Recurso nao encontrado"), Cod401("401", "Acesso nao Autorizado");
 
 	private String codigo;
 	private String descricao;
