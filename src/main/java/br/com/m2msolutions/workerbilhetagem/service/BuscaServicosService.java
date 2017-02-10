@@ -1,5 +1,6 @@
 package br.com.m2msolutions.workerbilhetagem.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,21 +22,21 @@ import br.com.m2msolutions.workerbilhetagem.authentication.BasicAuthenticationIn
 import br.com.m2msolutions.workerbilhetagem.commom.CodigoErroEnum;
 import br.com.m2msolutions.workerbilhetagem.commom.Config;
 import br.com.m2msolutions.workerbilhetagem.commom.Const;
-import br.com.m2msolutions.workerbilhetagem.models.ListaVendas;
-import br.com.m2msolutions.workerbilhetagem.models.Venda;
-import br.com.m2msolutions.workerbilhetagem.parse.ParseListaVendasToJson;
-import br.com.m2msolutions.workerbilhetagem.parse.ParseXmlToListaVendas;
+import br.com.m2msolutions.workerbilhetagem.models.ListaServicos;
+import br.com.m2msolutions.workerbilhetagem.parse.ParseListaServicosToJson;
+import br.com.m2msolutions.workerbilhetagem.parse.ParseXmlToListaServicos;
 
 @Component
-public class BuscaVendasService {
-	private Logger LOGGER = LoggerFactory.getLogger(BuscaVendasService.class);
+public class BuscaServicosService {
+	private Logger LOGGER = LoggerFactory.getLogger(BuscaServicosService.class);
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-	private String methodName = "buscaVendas";
+	private String methodName = "buscaServico";
 
 	@Autowired
 	private Config config;
 
-	public boolean buscarVendas(Integer codConexao, String codEmpresa, String data, String hora) {
+	public boolean buscarServicos(Integer codConexao, String codEmpresa, String data) {
 		boolean buscaCompleta = false;
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -51,27 +52,18 @@ public class BuscaVendasService {
 		url.append(Const.RjWebServiceUrl);
 		url.append(methodName + "/");
 		url.append(codConexao + "/");
-		url.append(codEmpresa + "/");
 		url.append(data + "/");
-		url.append(hora);
+		url.append(codEmpresa);
 
 		try {
 			HttpEntity<String> response = restTemplate.exchange(url.toString(), HttpMethod.GET, entity, String.class);
 
 			if (response.getHeaders().getContentType().equals(MediaType.TEXT_XML)) {
-				String listaVendasXml = response.getBody();
+				String listaServicosXml = response.getBody();
 				try {
-					ListaVendas listaVendas = ParseXmlToListaVendas.parse(listaVendasXml);
-
-					for (Venda venda : listaVendas.getListaVendas()) {
-						if (venda.getCodRetorno() != null) {
-							CodigoErroEnum erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
-							LOGGER.error("Erro - " + erro);
-						}
-					}
-
+					ListaServicos listaServicos = ParseXmlToListaServicos.parse(listaServicosXml);
 					buscaCompleta = true;
-					LOGGER.info(ParseListaVendasToJson.parse(listaVendas));
+					LOGGER.info(ParseListaServicosToJson.parse(listaServicos));
 				} catch (JAXBException e) {
 					LOGGER.error(e.toString());
 				}
