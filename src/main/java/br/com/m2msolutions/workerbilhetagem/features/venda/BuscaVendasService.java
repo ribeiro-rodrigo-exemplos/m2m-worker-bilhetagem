@@ -1,6 +1,5 @@
-package br.com.m2msolutions.workerbilhetagem.service;
+package br.com.m2msolutions.workerbilhetagem.features.venda;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,21 +21,16 @@ import br.com.m2msolutions.workerbilhetagem.authentication.BasicAuthenticationIn
 import br.com.m2msolutions.workerbilhetagem.commom.CodigoErroEnum;
 import br.com.m2msolutions.workerbilhetagem.commom.Config;
 import br.com.m2msolutions.workerbilhetagem.commom.Const;
-import br.com.m2msolutions.workerbilhetagem.models.ListaServicos;
-import br.com.m2msolutions.workerbilhetagem.parse.ParseListaServicosToJson;
-import br.com.m2msolutions.workerbilhetagem.parse.ParseXmlToListaServicos;
 
 @Component
-public class BuscaServicosService {
-	private Logger LOGGER = LoggerFactory.getLogger(BuscaServicosService.class);
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
-	private String methodName = "buscaServico";
+public class BuscaVendasService {
+	private Logger LOGGER = LoggerFactory.getLogger(BuscaVendasService.class);
+	private String methodName = "buscaVendas";
 
 	@Autowired
 	private Config config;
 
-	public boolean buscarServicos(Integer codConexao, String codEmpresa, String data) {
+	public boolean buscarVendas(Integer codConexao, String codEmpresa, String data, String hora) {
 		boolean buscaCompleta = false;
 
 		RestTemplate restTemplate = new RestTemplate();
@@ -52,20 +46,29 @@ public class BuscaServicosService {
 		url.append(Const.RjWebServiceUrl);
 		url.append(methodName + "/");
 		url.append(codConexao + "/");
+		url.append(codEmpresa + "/");
 		url.append(data + "/");
-		url.append(codEmpresa);
+		url.append(hora);
 
 		try {
 			HttpEntity<String> response = restTemplate.exchange(url.toString(), HttpMethod.GET, entity, String.class);
 
 			if (response.getHeaders().getContentType().equals(MediaType.TEXT_XML)) {
-				String listaServicosXml = response.getBody();
+				String listaVendasXml = response.getBody();
 				try {
-					ListaServicos listaServicos = ParseXmlToListaServicos.parse(listaServicosXml);
+					ListaVendasModel listaVendas = ParseXmlToListaVendas.parse(listaVendasXml);
+
+					for (VendaModel venda : listaVendas.getListaVendas()) {
+						if (venda.getCodRetorno() != null) {
+							CodigoErroEnum erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
+							LOGGER.error("Erro - " + erro);
+						}
+					}
+
 					buscaCompleta = true;
-					LOGGER.info(ParseListaServicosToJson.parse(listaServicos));
+					LOGGER.info(ParseListaVendasToJson.parse(listaVendas));
 				} catch (JAXBException e) {
-					LOGGER.error(e.toString());
+					LOGGER.error("Erro - " + e.toString());
 				}
 			} else {
 				LOGGER.error("Content Type Inválido para processamento: " + response.getHeaders().getContentType());

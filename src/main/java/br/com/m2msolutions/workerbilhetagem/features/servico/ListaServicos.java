@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.models;
+package br.com.m2msolutions.workerbilhetagem.features.servico;
 
 import java.util.List;
 

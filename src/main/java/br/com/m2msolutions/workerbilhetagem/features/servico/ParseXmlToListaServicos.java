@@ -1,12 +1,10 @@
-package br.com.m2msolutions.workerbilhetagem.parse;
+package br.com.m2msolutions.workerbilhetagem.features.servico;
 
 import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
-import br.com.m2msolutions.workerbilhetagem.models.ListaServicos;
 
 public class ParseXmlToListaServicos {
 

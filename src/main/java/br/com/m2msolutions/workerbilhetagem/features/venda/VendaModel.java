@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.models;
+package br.com.m2msolutions.workerbilhetagem.features.venda;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @XmlRootElement(name = "venda")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Venda {
+public class VendaModel {
 
 	private String idLog;
 	private String identificadorBilhete;

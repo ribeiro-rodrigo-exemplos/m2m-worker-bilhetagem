@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.models;
+package br.com.m2msolutions.workerbilhetagem.features.servico;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

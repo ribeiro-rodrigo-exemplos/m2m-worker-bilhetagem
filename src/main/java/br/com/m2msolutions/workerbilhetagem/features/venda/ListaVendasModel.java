@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.models;
+package br.com.m2msolutions.workerbilhetagem.features.venda;
 
 import java.util.List;
 
@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "vendas")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ListaVendas {
+public class ListaVendasModel {
 
 	@XmlElement(name = "venda")
-	private List<Venda> listaVendas = null;
+	private List<VendaModel> listaVendas = null;
 
-	public List<Venda> getListaVendas() {
+	public List<VendaModel> getListaVendas() {
 		return listaVendas;
 	}
 
-	public void setListaVendas(List<Venda> listaVendas) {
+	public void setListaVendas(List<VendaModel> listaVendas) {
 		this.listaVendas = listaVendas;
 	}
 }
