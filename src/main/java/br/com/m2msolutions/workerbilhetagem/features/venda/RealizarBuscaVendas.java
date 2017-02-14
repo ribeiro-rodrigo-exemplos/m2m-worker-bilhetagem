@@ -1,9 +1,5 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,31 +10,35 @@ import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultore
 
 @Component
 public class RealizarBuscaVendas {
-	private Logger LOGGER = LoggerFactory.getLogger(BuscaVendasService.class);
+	private Logger LOGGER = LoggerFactory.getLogger(RealizarBuscaVendas.class);
 
 	@Autowired
 	private BuscaVendasService buscaVendasService;
 
+	@Autowired
+	private EnviaDadosAntt enviaDadosAntt;
+
+	@Autowired
+	private EnviaDadosRabbit enviaDadosRabbit;
+
+	@Autowired
+	private VendasUtil vendasUtil;
+
 	@Async
 	public void realizarBuscaVendas(ClienteRjConsultores clienteRj) {
-		Integer codConexao = Integer.parseInt(clienteRj.getCodConexao());
-		String codEmpresa = clienteRj.getCodCliente();
-		String data = "";
-		String hora = "";
+		String url = vendasUtil.createUrl(clienteRj);
+		ListaVendasModel listaVendas = null;
 
-		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			DateFormat newDateFormat = new SimpleDateFormat("yyMMdd");
-			DateFormat hourFormat = new SimpleDateFormat("HHmm");
-
-			Date d1 = dateFormat.parse(clienteRj.getDataEnvio());
-
-			data = newDateFormat.format(d1);
-			hora = hourFormat.format(d1);
-
-		} catch (Exception e) {
-			LOGGER.error("Error - " + e.toString());
+		if (!"".equals(url)) {
+			LOGGER.info(url);
+			listaVendas = buscaVendasService.buscarVendas(url);
+			if (listaVendas != null) {
+				enviaDadosAntt.enviar(listaVendas, clienteRj);
+				enviaDadosRabbit.enviar(listaVendas, clienteRj);
+			}
+		} else {
+			LOGGER.error(url + " - URL Incorreta para consulta");
 		}
-		buscaVendasService.buscarVendas(codConexao, codEmpresa, data, hora);
 	}
+
 }

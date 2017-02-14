@@ -1,10 +1,23 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ParseListaVendasToJson {
 	public static String parse(ListaVendasModel listaVendas) {
 		Gson gson = new Gson();
-		return gson.toJson(listaVendas);
+		String listaVendasJson = gson.toJson(listaVendas);
+
+		JsonParser jsonParser = new JsonParser();
+		JsonElement element = jsonParser.parse(listaVendasJson);
+
+		JsonObject innerObject = new JsonObject();
+		innerObject.addProperty("collection", "nome_da_colecao");
+		innerObject.addProperty("action", "insert");
+		innerObject.add("data", element);
+
+		return innerObject.toString();
 	}
 }
