@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.features.venda;
+package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

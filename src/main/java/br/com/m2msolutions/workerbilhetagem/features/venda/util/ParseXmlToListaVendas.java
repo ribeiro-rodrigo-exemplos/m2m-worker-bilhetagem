@@ -1,10 +1,12 @@
-package br.com.m2msolutions.workerbilhetagem.features.venda;
+package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
 import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
 
 public class ParseXmlToListaVendas {
 

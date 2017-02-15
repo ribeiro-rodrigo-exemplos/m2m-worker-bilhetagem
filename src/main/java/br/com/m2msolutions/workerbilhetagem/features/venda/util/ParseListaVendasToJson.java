@@ -1,9 +1,11 @@
-package br.com.m2msolutions.workerbilhetagem.features.venda;
+package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
 
 public class ParseListaVendasToJson {
 	public static String parse(ListaVendasModel listaVendas) {

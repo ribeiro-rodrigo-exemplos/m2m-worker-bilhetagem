@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.features.venda;
+package br.com.m2msolutions.workerbilhetagem.features.venda.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,9 @@ import org.springframework.web.client.RestTemplate;
 import br.com.m2msolutions.workerbilhetagem.authentication.BasicAuthenticationInterceptor;
 import br.com.m2msolutions.workerbilhetagem.commom.CodigoErroEnum;
 import br.com.m2msolutions.workerbilhetagem.commom.Config;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.util.ParseXmlToListaVendas;
 
 @Component
 public class BuscaVendasService {

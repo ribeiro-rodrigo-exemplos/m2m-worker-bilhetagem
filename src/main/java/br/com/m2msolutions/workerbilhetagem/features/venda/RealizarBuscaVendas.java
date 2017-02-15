@@ -7,6 +7,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.service.BuscaVendasService;
+import br.com.m2msolutions.workerbilhetagem.features.venda.service.EnviaDadosAnttService;
+import br.com.m2msolutions.workerbilhetagem.features.venda.service.EnviaDadosRabbitService;
+import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 
 @Component
 public class RealizarBuscaVendas {
@@ -16,10 +21,10 @@ public class RealizarBuscaVendas {
 	private BuscaVendasService buscaVendasService;
 
 	@Autowired
-	private EnviaDadosAntt enviaDadosAntt;
+	private EnviaDadosAnttService enviaDadosAntt;
 
 	@Autowired
-	private EnviaDadosRabbit enviaDadosRabbit;
+	private EnviaDadosRabbitService enviaDadosRabbit;
 
 	@Autowired
 	private VendasUtil vendasUtil;
