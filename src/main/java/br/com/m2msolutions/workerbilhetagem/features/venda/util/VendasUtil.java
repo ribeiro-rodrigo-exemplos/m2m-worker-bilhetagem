@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.m2msolutions.workerbilhetagem.commom.Const;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
 
 @Component
 public class VendasUtil {
@@ -84,4 +85,11 @@ public class VendasUtil {
 		return dateTime;
 	}
 
+	public String getDataHoraUltimaVenda(ListaVendasModel listaVendas) {
+		int ultimaVenda = listaVendas.getListaVendas().size() - 1;
+		String dataUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getDataEmissao();
+		String horaUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getHoraEmissao();
+
+		return parseStringToSqlDate(dataUltimaVenda, horaUltimaVenda);
+	}
 }

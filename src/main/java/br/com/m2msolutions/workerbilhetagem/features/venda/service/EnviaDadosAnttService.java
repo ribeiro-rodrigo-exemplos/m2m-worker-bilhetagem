@@ -19,14 +19,7 @@ public class EnviaDadosAnttService {
 	public void enviar(ListaVendasModel listaVendas, ClienteRjConsultores clienteRj) {
 		LOGGER.info("Enviar Dados ANTT");
 		LOGGER.info("Informacao enviada a ANTT - Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNome(),
-				getDataHoraUltimaVenda(listaVendas));
-	}
+				vendasUtil.getDataHoraUltimaVenda(listaVendas));
 
-	private String getDataHoraUltimaVenda(ListaVendasModel listaVendas) {
-		int ultimaVenda = listaVendas.getListaVendas().size() - 1;
-		String dataUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getDataEmissao();
-		String horaUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getHoraEmissao();
-
-		return vendasUtil.parseStringToSqlDate(dataUltimaVenda, horaUltimaVenda);
 	}
 }

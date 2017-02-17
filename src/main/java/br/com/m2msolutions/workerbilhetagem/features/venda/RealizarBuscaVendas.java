@@ -35,8 +35,9 @@ public class RealizarBuscaVendas {
 		ListaVendasModel listaVendas = null;
 
 		if (!"".equals(url)) {
-			LOGGER.info(url);
 			listaVendas = buscaVendasService.buscarVendas(url);
+			LOGGER.info("Cliente: {} - Ultima Consulta: {}", clienteRj.getCliente().getNome(),
+					clienteRj.getDataEnvio());
 			if (listaVendas != null) {
 				enviaDadosAntt.enviar(listaVendas, clienteRj);
 				enviaDadosRabbit.enviar(listaVendas, clienteRj);
@@ -45,5 +46,4 @@ public class RealizarBuscaVendas {
 			LOGGER.error(url + " - URL Incorreta para consulta");
 		}
 	}
-
 }
