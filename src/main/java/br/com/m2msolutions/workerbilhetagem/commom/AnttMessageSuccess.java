@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "resultadoOperacao")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AnttMessageSuccess {
+
 	private String codigo;
 	private String mensagem;
 	private String idTransacao;

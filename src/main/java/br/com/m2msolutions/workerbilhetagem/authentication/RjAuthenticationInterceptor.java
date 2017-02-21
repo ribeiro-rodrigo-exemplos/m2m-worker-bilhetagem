@@ -9,12 +9,12 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
-public class BasicAuthenticationInterceptor implements ClientHttpRequestInterceptor {
+public class RjAuthenticationInterceptor implements ClientHttpRequestInterceptor {
 
 	private String username;
 	private String password;
 
-	public BasicAuthenticationInterceptor(String username, String password) {
+	public RjAuthenticationInterceptor(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}

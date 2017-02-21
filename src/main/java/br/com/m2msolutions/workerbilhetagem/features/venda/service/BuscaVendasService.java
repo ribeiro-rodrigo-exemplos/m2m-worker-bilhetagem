@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.m2msolutions.workerbilhetagem.authentication.BasicAuthenticationInterceptor;
-import br.com.m2msolutions.workerbilhetagem.commom.CodigoErroEnum;
+import br.com.m2msolutions.workerbilhetagem.authentication.RjAuthenticationInterceptor;
 import br.com.m2msolutions.workerbilhetagem.commom.Config;
+import br.com.m2msolutions.workerbilhetagem.commom.errors.CodigoErroEnum;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.ParseXmlToListaVendas;
@@ -40,7 +40,7 @@ public class BuscaVendasService {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 
 		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
-		interceptors.add(new BasicAuthenticationInterceptor(config.getUsernameRJ(), config.getPasswordRJ()));
+		interceptors.add(new RjAuthenticationInterceptor(config.getUsernameRJ(), config.getPasswordRJ()));
 		restTemplate.setInterceptors(interceptors);
 
 		try {

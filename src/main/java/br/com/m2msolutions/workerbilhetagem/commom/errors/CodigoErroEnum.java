@@ -1,4 +1,4 @@
-package br.com.m2msolutions.workerbilhetagem.commom;
+package br.com.m2msolutions.workerbilhetagem.commom.errors;
 
 public enum CodigoErroEnum {
 	Cod00("00", "Nenhum registro encontrado"), Cod01("01", "Erro ao consultar Web Service."), Cod03("03",
