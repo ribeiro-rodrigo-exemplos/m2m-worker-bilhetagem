@@ -34,7 +34,7 @@ public class ClienteRjConsultores {
 	private String codCliente;
 
 	@NotNull
-	@Column(name = "data_envio")
+	@Column(name = "dt_sincronismo_venda_bilhetes")
 	private String dataEnvio;
 
 	public ClienteRjConsultores() {

@@ -23,9 +23,11 @@ import br.com.m2msolutions.workerbilhetagem.commom.Config;
 import br.com.m2msolutions.workerbilhetagem.commom.errors.AnttError;
 import br.com.m2msolutions.workerbilhetagem.commom.errors.AnttErrorList;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
+import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultoresRepository;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.ParseListaVendasToAntt;
+import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 
 @Component
 public class EnviaDadosAnttService {
@@ -36,6 +38,12 @@ public class EnviaDadosAnttService {
 
 	@Autowired
 	EnviaDadosRabbitService enviaDadosRabbitService;
+
+	@Autowired
+	ClienteRjConsultoresRepository clienteRjConsultoresRepository;
+
+	@Autowired
+	VendasUtil vendasUtil;
 
 	@Autowired
 	private Config config;
@@ -55,6 +63,12 @@ public class EnviaDadosAnttService {
 				enviaDadosRabbitService.enviar(json, clienteRj);
 			}
 		}
+
+		String dataUltimaVenda = vendasUtil.getDataHoraUltimaVenda(listaVendas);
+		clienteRj.setDataEnvio(dataUltimaVenda);
+		clienteRjConsultoresRepository.save(clienteRj);
+
+		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNome(), dataUltimaVenda);
 	}
 
 	private boolean postAntt(String json) {
