@@ -11,38 +11,39 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VendaModel {
 
+	private String aliquotaICMS;
+	private String categoria;
+	private String celularPassageiro;
+	private String cnpj;
+	private String cpfPassageiro;
+	private String dataEmissao;
+	private String dataViagem;
+	private String destino;
+	private String docPassageiro;
+	private String horaEmissao;
+	private String horaViagem;
 	private String idLog;
 	private String identificadorBilhete;
-	private String cnpj;
-	private String numSerie;
-	private String numBilheteEmbarque;
-	private String dataEmissao;
-	private String horaEmissao;
-	private String categoria;
 	private String linha;
-	private String origem;
-	private String destino;
-	private String tipoServico;
-	private String dataViagem;
-	private String horaVigem;
-	private String tarifa;
-	private String perDesconto;
-	private String aliquotaICMS;
-	private String valorPedagio;
-	private String taxaEmbarque;
-	private String valorTotal;
+	private String motivoDesconto;
 	private String nomePassageiro;
-	private String docPassageiro;
-	private String cpfPassageiro;
-	private String celularPassageiro;
 	private String numBilheteImpresso;
-	private String numBilheteEstado;
-	private String numServico;
-	private String status;
-	private String retorno;
-	private String plataforma;
-	private String origemEmissao;
 	private String numeroNovoBilheteEmbarque;
+	private String numSerie;
+	private String numServico;
+	private String origem;
+	private String origemEmissao;
+	private String perDesconto;
+	private String plataforma;
+	private String poltrona;
+	private String status;
+	private String tarifa;
+	private String taxaEmbarque;
+	private String tipoServico;
+	private String tipoViagem;
+	private String valorPedagio;
+	private String valorTotal;
+	private String numBilheteEmbarque;
 	private String codRetorno;
 
 	public String getIdLog() {
@@ -75,14 +76,6 @@ public class VendaModel {
 
 	public void setNumSerie(String numSerie) {
 		this.numSerie = numSerie;
-	}
-
-	public String getNumBilheteEmbarque() {
-		return numBilheteEmbarque;
-	}
-
-	public void setNumBilheteEmbarque(String numBilheteEmbarque) {
-		this.numBilheteEmbarque = numBilheteEmbarque;
 	}
 
 	public String getDataEmissao() {
@@ -147,14 +140,6 @@ public class VendaModel {
 
 	public void setDataViagem(String dataViagem) {
 		this.dataViagem = dataViagem;
-	}
-
-	public String getHoraVigem() {
-		return horaVigem;
-	}
-
-	public void setHoraVigem(String horaVigem) {
-		this.horaVigem = horaVigem;
 	}
 
 	public String getTarifa() {
@@ -245,14 +230,6 @@ public class VendaModel {
 		this.numBilheteImpresso = numBilheteImpresso;
 	}
 
-	public String getNumBilheteEstado() {
-		return numBilheteEstado;
-	}
-
-	public void setNumBilheteEstado(String numBilheteEstado) {
-		this.numBilheteEstado = numBilheteEstado;
-	}
-
 	public String getNumServico() {
 		return numServico;
 	}
@@ -267,14 +244,6 @@ public class VendaModel {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String getRetorno() {
-		return retorno;
-	}
-
-	public void setRetorno(String retorno) {
-		this.retorno = retorno;
 	}
 
 	public String getPlataforma() {
@@ -308,4 +277,45 @@ public class VendaModel {
 	public void setCodRetorno(String codRetorno) {
 		this.codRetorno = codRetorno;
 	}
+
+	public String getHoraViagem() {
+		return horaViagem;
+	}
+
+	public void setHoraViagem(String horaViagem) {
+		this.horaViagem = horaViagem;
+	}
+
+	public String getMotivoDesconto() {
+		return motivoDesconto;
+	}
+
+	public void setMotivoDesconto(String motivoDesconto) {
+		this.motivoDesconto = motivoDesconto;
+	}
+
+	public String getPoltrona() {
+		return poltrona;
+	}
+
+	public void setPoltrona(String poltrona) {
+		this.poltrona = poltrona;
+	}
+
+	public String getTipoViagem() {
+		return tipoViagem;
+	}
+
+	public void setTipoViagem(String tipoViagem) {
+		this.tipoViagem = tipoViagem;
+	}
+
+	public String getNumBilheteEmbarque() {
+		return numBilheteEmbarque;
+	}
+
+	public void setNumBilheteEmbarque(String numBilheteEmbarque) {
+		this.numBilheteEmbarque = numBilheteEmbarque;
+	}
+
 }

@@ -10,7 +10,6 @@ import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultore
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.service.BuscaVendasService;
 import br.com.m2msolutions.workerbilhetagem.features.venda.service.EnviaDadosAnttService;
-import br.com.m2msolutions.workerbilhetagem.features.venda.service.EnviaDadosRabbitService;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 
 @Component
@@ -22,9 +21,6 @@ public class RealizarBuscaVendas {
 
 	@Autowired
 	private EnviaDadosAnttService enviaDadosAntt;
-
-	@Autowired
-	private EnviaDadosRabbitService enviaDadosRabbit;
 
 	@Autowired
 	private VendasUtil vendasUtil;
@@ -40,7 +36,6 @@ public class RealizarBuscaVendas {
 					clienteRj.getDataEnvio());
 			if (listaVendas != null) {
 				enviaDadosAntt.enviar(listaVendas, clienteRj);
-				enviaDadosRabbit.enviar(listaVendas, clienteRj);
 			}
 		} else {
 			LOGGER.error(url + " - URL Incorreta para consulta");

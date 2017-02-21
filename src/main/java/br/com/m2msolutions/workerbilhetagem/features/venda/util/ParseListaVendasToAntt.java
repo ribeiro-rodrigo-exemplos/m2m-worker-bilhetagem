@@ -1,46 +1,66 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.google.gson.Gson;
 
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.InformacoesPassageiro;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogVendaPassagemModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
 
+@Component
 public class ParseListaVendasToAntt {
-	public static String parse(VendaModel venda) {
+
+	@Autowired
+	private VendasUtil vendasUtil;
+
+	public String parse(VendaModel venda) {
 		LogVendaPassagemModel logVendaPassagem = new LogVendaPassagemModel();
 
 		logVendaPassagem.setIdLog(venda.getIdLog());
-		logVendaPassagem.setCodigoBilheteEmbarque(venda.getNumBilheteEmbarque());
-		logVendaPassagem.setCnpjEmpresa(venda.getCnpj());
+		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
+
+		logVendaPassagem.setCnpjEmpresa("22832012000115");
+		// logVendaPassagem.setCnpjEmpresa(venda.getCnpj());
+
 		logVendaPassagem.setNumeroSerieEquipamentoFiscal(venda.getNumSerie());
-		logVendaPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
-		logVendaPassagem.setDataEmissaoBilhete(venda.getDataEmissao());
-		logVendaPassagem.setHoraEmissaoBilhete(venda.getHoraEmissao());
+		logVendaPassagem.setNumeroBilheteEmbarque(
+				("000000" + venda.getNumBilheteEmbarque()).substring(venda.getNumBilheteEmbarque().length()));
+		logVendaPassagem.setDataEmissaoBilhete(vendasUtil.parseStringDateToUTC(venda.getDataEmissao()));
+		logVendaPassagem.setHoraEmissaoBilhete(vendasUtil.parseStringHourToUTC(venda.getHoraEmissao()));
 		logVendaPassagem.setCodigoCategoriaTransporte(venda.getCategoria());
 		logVendaPassagem.setIdentificacaoLinha(venda.getLinha());
-		logVendaPassagem.setIdPontoOrigemViagem(venda.getOrigem());
-		logVendaPassagem.setIdPontoDestinoViagem(venda.getDestino());
+		logVendaPassagem.setIdPontoOrigemViagem("".equals(venda.getOrigem()) ? "0" : venda.getOrigem());
+		logVendaPassagem.setIdPontoDestinoViagem("".equals(venda.getDestino()) ? "0" : venda.getDestino());
 		logVendaPassagem.setCodigoTipoServico(venda.getTipoServico());
-		logVendaPassagem.setDataViagem(venda.getDataViagem());
-		logVendaPassagem.setHoraViagem(venda.getHoraVigem());
-		// logVendaPassagem.setCodigoTipoViagem(codigoTipoViagem);
-		// logVendaPassagem.setNumeroPoltrona(numeroPoltrona);
+		logVendaPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
+		logVendaPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
+		logVendaPassagem.setCodigoTipoViagem(venda.getTipoViagem());
+		logVendaPassagem.setNumeroPoltrona(venda.getPoltrona());
 		logVendaPassagem.setPlataformaEmbarque(venda.getPlataforma());
-		// logVendaPassagem.setCodigoMotivoDesconto(codigoMotivoDesconto);
+		logVendaPassagem.setCodigoMotivoDesconto(venda.getMotivoDesconto());
 		logVendaPassagem.setValorTarifa(venda.getTarifa());
 		logVendaPassagem.setPercentualDesconto(venda.getPerDesconto());
 		logVendaPassagem.setAliquotaICMS(venda.getAliquotaICMS());
 		logVendaPassagem.setValorPedagio(venda.getValorPedagio());
 		logVendaPassagem.setValorTaxaEmbarque(venda.getTaxaEmbarque());
 		logVendaPassagem.setValorTotal(venda.getValorTotal());
-		logVendaPassagem.setNomePassageiro(venda.getNomePassageiro());
-		logVendaPassagem.setDocumentoIdentificacaoPassageiro(venda.getDocPassageiro());
-		logVendaPassagem.setCpfPassageiro(venda.getCpfPassageiro());
-		logVendaPassagem.setCelularPassageiro(venda.getCelularPassageiro());
-		logVendaPassagem.setOrigemEmissao(venda.getOrigemEmissao());
+
+		InformacoesPassageiro infoPassageiro = new InformacoesPassageiro();
+
+		infoPassageiro.setNomePassageiro(venda.getNomePassageiro());
+		infoPassageiro.setDocumentoIdentificacaoPassageiro(venda.getDocPassageiro());
+		infoPassageiro
+				.setCpfPassageiro(vendasUtil.isValidCPF(venda.getCpfPassageiro()) ? venda.getCpfPassageiro() : null);
+		infoPassageiro.setCelularPassageiro(
+				venda.getCelularPassageiro().length() >= 10 && venda.getCelularPassageiro().length() <= 14
+						? venda.getCelularPassageiro() : null);
+
+		logVendaPassagem.setInformacoesPassageiro(infoPassageiro);
 
 		Gson gson = new Gson();
-		String listaVendasJson = gson.toJson(venda);
+		String listaVendasJson = gson.toJson(logVendaPassagem);
 
 		return listaVendasJson.toString();
 	}

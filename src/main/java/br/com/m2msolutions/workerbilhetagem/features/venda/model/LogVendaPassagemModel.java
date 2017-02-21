@@ -1,13 +1,7 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@XmlRootElement(name = "venda")
-@XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LogVendaPassagemModel {
 
@@ -35,10 +29,8 @@ public class LogVendaPassagemModel {
 	private String valorPedagio;
 	private String valorTaxaEmbarque;
 	private String valorTotal;
-	private String nomePassageiro;
-	private String documentoIdentificacaoPassageiro;
-	private String cpfPassageiro;
-	private String celularPassageiro;
+	private InformacoesPassageiro informacoesPassageiro;
+
 	private String origemEmissao;
 
 	public String getIdLog() {
@@ -233,38 +225,6 @@ public class LogVendaPassagemModel {
 		this.valorTotal = valorTotal;
 	}
 
-	public String getNomePassageiro() {
-		return nomePassageiro;
-	}
-
-	public void setNomePassageiro(String nomePassageiro) {
-		this.nomePassageiro = nomePassageiro;
-	}
-
-	public String getDocumentoIdentificacaoPassageiro() {
-		return documentoIdentificacaoPassageiro;
-	}
-
-	public void setDocumentoIdentificacaoPassageiro(String documentoIdentificacaoPassageiro) {
-		this.documentoIdentificacaoPassageiro = documentoIdentificacaoPassageiro;
-	}
-
-	public String getCpfPassageiro() {
-		return cpfPassageiro;
-	}
-
-	public void setCpfPassageiro(String cpfPassageiro) {
-		this.cpfPassageiro = cpfPassageiro;
-	}
-
-	public String getCelularPassageiro() {
-		return celularPassageiro;
-	}
-
-	public void setCelularPassageiro(String celularPassageiro) {
-		this.celularPassageiro = celularPassageiro;
-	}
-
 	public String getOrigemEmissao() {
 		return origemEmissao;
 	}
@@ -272,4 +232,13 @@ public class LogVendaPassagemModel {
 	public void setOrigemEmissao(String origemEmissao) {
 		this.origemEmissao = origemEmissao;
 	}
+
+	public InformacoesPassageiro getInformacoesPassageiro() {
+		return informacoesPassageiro;
+	}
+
+	public void setInformacoesPassageiro(InformacoesPassageiro informacoesPassageiro) {
+		this.informacoesPassageiro = informacoesPassageiro;
+	}
+
 }

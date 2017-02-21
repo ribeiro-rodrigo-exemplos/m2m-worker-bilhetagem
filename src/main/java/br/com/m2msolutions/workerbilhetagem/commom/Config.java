@@ -11,6 +11,12 @@ public class Config {
 	@Value("${authentication.rj.password}")
 	private String passwordRJ;
 
+	@Value("${authentication.antt.url}")
+	private String anttUrl;
+
+	@Value("${authentication.antt.token}")
+	private String anttToken;
+
 	@Value("${spring.rabbitmq.queue.name}")
 	private String queueName;
 
@@ -91,5 +97,21 @@ public class Config {
 
 	public void setRabbitRoutingKey(String rabbitRoutingKey) {
 		this.rabbitRoutingKey = rabbitRoutingKey;
+	}
+
+	public String getAnttToken() {
+		return anttToken;
+	}
+
+	public void setAnttToken(String anttToken) {
+		this.anttToken = anttToken;
+	}
+
+	public String getAnttUrl() {
+		return anttUrl;
+	}
+
+	public void setAnttUrl(String anttUrl) {
+		this.anttUrl = anttUrl;
 	}
 }
