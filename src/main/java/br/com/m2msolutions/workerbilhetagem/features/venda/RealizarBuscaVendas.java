@@ -7,9 +7,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
-import br.com.m2msolutions.workerbilhetagem.features.venda.service.BuscaVendasService;
-import br.com.m2msolutions.workerbilhetagem.features.venda.service.EnviaDadosAnttService;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendas;
+import br.com.m2msolutions.workerbilhetagem.features.venda.service.BuscaVendas;
+import br.com.m2msolutions.workerbilhetagem.features.venda.service.EnviaDadosAntt;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 
 @Component
@@ -17,10 +17,10 @@ public class RealizarBuscaVendas {
 	private Logger LOGGER = LoggerFactory.getLogger(RealizarBuscaVendas.class);
 
 	@Autowired
-	private BuscaVendasService buscaVendasService;
+	private BuscaVendas buscaVendasService;
 
 	@Autowired
-	private EnviaDadosAnttService enviaDadosAntt;
+	private EnviaDadosAntt enviaDadosAntt;
 
 	@Autowired
 	private VendasUtil vendasUtil;
@@ -28,17 +28,14 @@ public class RealizarBuscaVendas {
 	@Async
 	public void realizarBuscaVendas(ClienteRjConsultores clienteRj) {
 		String url = vendasUtil.createUrl(clienteRj);
-		ListaVendasModel listaVendas = null;
 
 		if (!"".equals(url)) {
-			listaVendas = buscaVendasService.buscarVendas(url);
-			LOGGER.info("Cliente: {} - Ultima Consulta: {}", clienteRj.getCliente().getNome(),
-					clienteRj.getDataEnvio());
+			ListaVendas listaVendas = buscaVendasService.buscarVendas(url, clienteRj);
 			if (listaVendas != null) {
 				enviaDadosAntt.enviar(listaVendas, clienteRj);
 			}
 		} else {
-			LOGGER.error(url + " - URL Incorreta para consulta");
+			LOGGER.error("{} - URL Incorreta para consulta", url);
 		}
 	}
 }

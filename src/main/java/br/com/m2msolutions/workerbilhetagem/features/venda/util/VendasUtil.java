@@ -1,22 +1,31 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.com.m2msolutions.workerbilhetagem.commom.Const;
+import br.com.m2msolutions.workerbilhetagem.config.Config;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendas;
 
 @Component
 public class VendasUtil {
 	private Logger LOGGER = LoggerFactory.getLogger(VendasUtil.class);
 
 	private static String methodName = "buscaVendas";
+
+	@Autowired
+	Config config;
 
 	private static final int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 	private static final int[] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -29,7 +38,7 @@ public class VendasUtil {
 
 		StringBuilder url = new StringBuilder();
 
-		url.append(Const.RjWebServiceUrl);
+		url.append(config.getRjWebServiceUrl());
 		url.append(methodName + "/");
 		url.append(codConexao + "/");
 		url.append(codEmpresa + "/");
@@ -74,13 +83,14 @@ public class VendasUtil {
 
 	public String parseStringToSqlDate(String date, String hour) {
 		String dateTime = "";
+		hour = ("0000" + hour).substring(hour.length());
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("yyMMdd HHmm");
-			DateFormat hourFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			DateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			Date date_ = dateFormat.parse(date + " " + hour);
 
-			dateTime = hourFormat.format(date_);
+			dateTime = newDateFormat.format(date_);
 
 		} catch (Exception e) {
 			LOGGER.error("Error - " + e.toString());
@@ -88,11 +98,10 @@ public class VendasUtil {
 		return dateTime;
 	}
 
-	public String getDataHoraUltimaVenda(ListaVendasModel listaVendas) {
+	public String getDataHoraUltimaVenda(ListaVendas listaVendas) {
 		int ultimaVenda = listaVendas.getListaVendas().size() - 1;
 		String dataUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getDataEmissao();
 		String horaUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getHoraEmissao();
-
 		return parseStringToSqlDate(dataUltimaVenda, horaUltimaVenda);
 	}
 
@@ -142,6 +151,7 @@ public class VendasUtil {
 		if ((cpf == null) || (cpf.length() != 11))
 			return false;
 
+		cpf = cpf.replaceAll("[^0-9]", "");
 		Integer digito1 = calcularDigito(cpf.substring(0, 9), pesoCPF);
 		Integer digito2 = calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
 		return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
@@ -156,4 +166,16 @@ public class VendasUtil {
 		return cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());
 	}
 
+	public void saveIntoFile(String data, String filename) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append(data);
+			sb.append(System.lineSeparator());
+			File file = new File(filename);
+			file.createNewFile();
+			Files.write(Paths.get(filename), sb.toString().getBytes(), StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			LOGGER.error("Erro ao salvar string no arquivo: {} ", filename);
+		}
+	}
 }

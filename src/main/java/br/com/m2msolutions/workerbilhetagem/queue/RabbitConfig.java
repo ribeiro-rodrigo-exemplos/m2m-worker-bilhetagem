@@ -1,7 +1,6 @@
 package br.com.m2msolutions.workerbilhetagem.queue;
 
 import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -10,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.com.m2msolutions.workerbilhetagem.commom.Config;
+import br.com.m2msolutions.workerbilhetagem.config.Config;
 
 @Configuration
 public class RabbitConfig {
@@ -31,20 +30,13 @@ public class RabbitConfig {
 	@Bean
 	public AmqpAdmin amqpAdmin() {
 		RabbitAdmin admin = new RabbitAdmin(connectionFactory());
-		admin.declareQueue(queue());
 		return admin;
 	}
 
 	@Bean
 	public RabbitTemplate rabbitTemplate() {
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
-		rabbitTemplate.setRoutingKey(config.getRabbitRoutingKey());
-		rabbitTemplate.setQueue(config.getQueueName());
 		return rabbitTemplate;
 	}
 
-	@Bean
-	public Queue queue() {
-		return new Queue(config.getQueueName());
-	}
 }

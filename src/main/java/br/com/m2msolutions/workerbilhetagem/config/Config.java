@@ -1,10 +1,14 @@
-package br.com.m2msolutions.workerbilhetagem.commom;
+package br.com.m2msolutions.workerbilhetagem.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Config {
+
+	@Value("${rjconsultores.webservice.url}")
+	private String RjWebServiceUrl;
+
 	@Value("${authentication.rj.username}")
 	private String usernameRJ;
 
@@ -20,6 +24,9 @@ public class Config {
 	@Value("${spring.rabbitmq.queue.name}")
 	private String queueName;
 
+	@Value("${spring.rabbitmq.queue.reprocess.name}")
+	private String queueReprocessName;
+
 	@Value("${spring.rabbitmq.addresses}")
 	private String rabbitIp;
 
@@ -34,6 +41,20 @@ public class Config {
 
 	@Value("${spring.rabbitmq.routingkey}")
 	private String rabbitRoutingKey;
+
+	@Value("${collection.name}")
+	private String collectionName;
+
+	@Value("${savedatatofile}")
+	private boolean saveDataToFile;
+
+	public String getRjWebServiceUrl() {
+		return RjWebServiceUrl;
+	}
+
+	public void setRjWebServiceUrl(String rjWebServiceUrl) {
+		RjWebServiceUrl = rjWebServiceUrl;
+	}
 
 	public String getUsernameRJ() {
 		return usernameRJ;
@@ -113,5 +134,29 @@ public class Config {
 
 	public void setAnttUrl(String anttUrl) {
 		this.anttUrl = anttUrl;
+	}
+
+	public String getQueueReprocessName() {
+		return queueReprocessName;
+	}
+
+	public void setQueueReprocessName(String queueReprocessName) {
+		this.queueReprocessName = queueReprocessName;
+	}
+
+	public String getCollectionName() {
+		return collectionName;
+	}
+
+	public void setCollectionName(String collectionName) {
+		this.collectionName = collectionName;
+	}
+
+	public boolean isSaveDataToFile() {
+		return saveDataToFile;
+	}
+
+	public void setSaveDataToFile(boolean saveDataToFile) {
+		this.saveDataToFile = saveDataToFile;
 	}
 }

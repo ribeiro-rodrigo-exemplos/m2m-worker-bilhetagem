@@ -29,10 +29,13 @@ public class BuscaDadosCliente {
 	public void buscarDadosClientes() {
 		try {
 			for (ClienteRjConsultores clienteRj : clienteRjConsultoresRepository.findAll()) {
+				LOGGER.info("Cliente: {} - Cod Conexao: {} - Cod Empresa: {} - Ultima Consulta: {}",
+						clienteRj.getCliente().getNome(), clienteRj.getCodConexao(), clienteRj.getCodCliente(),
+						clienteRj.getDataEnvio());
 				realizarBuscaVendas.realizarBuscaVendas(clienteRj);
 			}
 		} catch (Exception e) {
-			LOGGER.error("Error - " + e.toString());
+			LOGGER.error("Error {} ", e.toString());
 		}
 	}
 }

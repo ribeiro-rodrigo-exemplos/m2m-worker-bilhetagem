@@ -3,7 +3,7 @@ package br.com.m2msolutions.workerbilhetagem.features.venda.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LogVendaPassagemModel {
+public class LogVendaPassagem {
 
 	private String idLog;
 	private String codigoBilheteEmbarque;

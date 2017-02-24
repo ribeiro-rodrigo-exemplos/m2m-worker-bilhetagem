@@ -6,19 +6,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendas;
 
 public class ParseXmlToListaVendas {
-
-	public static ListaVendasModel parse(String xmlString) throws JAXBException {
-		ListaVendasModel listaVendas = new ListaVendasModel();
-
-		JAXBContext jaxbContext = JAXBContext.newInstance(ListaVendasModel.class);
-		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-		StringReader xml = new StringReader(xmlString);
-		listaVendas = (ListaVendasModel) jaxbUnmarshaller.unmarshal(xml);
-
+	public static ListaVendas parse(String xmlString) throws JAXBException {
+		Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(ListaVendas.class).createUnmarshaller();
+		ListaVendas listaVendas = (ListaVendas) jaxbUnmarshaller.unmarshal(new StringReader(xmlString));
 		return listaVendas;
 	}
 }

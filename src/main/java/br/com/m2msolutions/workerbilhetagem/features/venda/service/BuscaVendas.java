@@ -15,25 +15,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.m2msolutions.workerbilhetagem.authentication.RjAuthenticationInterceptor;
-import br.com.m2msolutions.workerbilhetagem.commom.Config;
 import br.com.m2msolutions.workerbilhetagem.commom.errors.CodigoErroEnum;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
+import br.com.m2msolutions.workerbilhetagem.config.Config;
+import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendas;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.ParseXmlToListaVendas;
 
 @Component
-public class BuscaVendasService {
-	private Logger LOGGER = LoggerFactory.getLogger(BuscaVendasService.class);
+public class BuscaVendas {
+	private Logger LOGGER = LoggerFactory.getLogger(BuscaVendas.class);
 
 	@Autowired
 	private Config config;
 
-	public ListaVendasModel buscarVendas(String url) {
+	public ListaVendas buscarVendas(String url, ClienteRjConsultores clienteRj) {
 		CodigoErroEnum erro = null;
-		ListaVendasModel listaVendas = null;
+		ListaVendas listaVendas = null;
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -49,26 +51,29 @@ public class BuscaVendasService {
 			if (response.getHeaders().getContentType().equals(MediaType.TEXT_XML)) {
 				String listaVendasXml = response.getBody();
 				try {
-					ListaVendasModel listaVendasModel = ParseXmlToListaVendas.parse(listaVendasXml);
+					ListaVendas listaVendasModel = ParseXmlToListaVendas.parse(listaVendasXml);
 
-					for (VendaModel venda : listaVendasModel.getListaVendas()) {
+					for (Venda venda : listaVendasModel.getListaVendas()) {
 						if (venda.getCodRetorno() != null) {
 							erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
-							LOGGER.error("Erro - " + erro);
+							LOGGER.error("Erro - {} - Cliente: {}", erro, clienteRj.getCliente().getNome());
 						}
 					}
 					if (erro == null) {
 						listaVendas = listaVendasModel;
 					}
 				} catch (JAXBException e) {
-					LOGGER.error("Erro - " + e.toString());
+					LOGGER.error("Erro - {}", e.toString());
 				}
 			} else {
 				LOGGER.error("Content Type Invalido para processamento: " + response.getHeaders().getContentType());
 			}
 		} catch (HttpClientErrorException ex) {
 			erro = CodigoErroEnum.valueOf("Cod" + ex.getStatusCode());
-			LOGGER.error("Erro - " + erro);
+			LOGGER.error("Erro - {}", erro);
+		} catch (HttpServerErrorException ex) {
+			erro = CodigoErroEnum.valueOf("Cod" + ex.getStatusCode());
+			LOGGER.error("Erro - {} - Cliente: {} ", erro, clienteRj.getCliente().getNome());
 		}
 		return listaVendas;
 	}

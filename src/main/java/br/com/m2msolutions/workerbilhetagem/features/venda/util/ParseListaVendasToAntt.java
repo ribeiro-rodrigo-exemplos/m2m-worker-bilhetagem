@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.InformacoesPassageiro;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogVendaPassagemModel;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogVendaPassagem;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 
 @Component
 public class ParseListaVendasToAntt {
@@ -15,8 +15,8 @@ public class ParseListaVendasToAntt {
 	@Autowired
 	private VendasUtil vendasUtil;
 
-	public String parse(VendaModel venda) {
-		LogVendaPassagemModel logVendaPassagem = new LogVendaPassagemModel();
+	public String parse(Venda venda) {
+		LogVendaPassagem logVendaPassagem = new LogVendaPassagem();
 
 		logVendaPassagem.setIdLog(venda.getIdLog());
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
@@ -50,7 +50,7 @@ public class ParseListaVendasToAntt {
 
 		InformacoesPassageiro infoPassageiro = new InformacoesPassageiro();
 
-		infoPassageiro.setNomePassageiro(venda.getNomePassageiro());
+		infoPassageiro.setNomePassageiro(venda.getNomePassageiro().trim());
 		infoPassageiro.setDocumentoIdentificacaoPassageiro(venda.getDocPassageiro());
 		infoPassageiro
 				.setCpfPassageiro(vendasUtil.isValidCPF(venda.getCpfPassageiro()) ? venda.getCpfPassageiro() : null);

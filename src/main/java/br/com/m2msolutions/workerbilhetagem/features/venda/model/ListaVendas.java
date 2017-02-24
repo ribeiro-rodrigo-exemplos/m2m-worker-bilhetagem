@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "vendas")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ListaVendasModel {
+public class ListaVendas {
 
 	@XmlElement(name = "venda")
-	private List<VendaModel> listaVendas = null;
+	private List<Venda> listaVendas = null;
 
-	public List<VendaModel> getListaVendas() {
+	public List<Venda> getListaVendas() {
 		return listaVendas;
 	}
 
-	public void setListaVendas(List<VendaModel> listaVendas) {
+	public void setListaVendas(List<Venda> listaVendas) {
 		this.listaVendas = listaVendas;
 	}
 }

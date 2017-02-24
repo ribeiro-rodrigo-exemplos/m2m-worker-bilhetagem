@@ -13,31 +13,32 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
 import br.com.m2msolutions.workerbilhetagem.authentication.AnttAuthenticationInterceptor;
 import br.com.m2msolutions.workerbilhetagem.commom.AnttMessageSuccess;
-import br.com.m2msolutions.workerbilhetagem.commom.Config;
 import br.com.m2msolutions.workerbilhetagem.commom.errors.AnttError;
 import br.com.m2msolutions.workerbilhetagem.commom.errors.AnttErrorList;
+import br.com.m2msolutions.workerbilhetagem.config.Config;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultoresRepository;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendasModel;
-import br.com.m2msolutions.workerbilhetagem.features.venda.model.VendaModel;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.ListaVendas;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.ParseListaVendasToAntt;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 
 @Component
-public class EnviaDadosAnttService {
-	private Logger LOGGER = LoggerFactory.getLogger(EnviaDadosAnttService.class);
+public class EnviaDadosAntt {
+	private Logger LOGGER = LoggerFactory.getLogger(EnviaDadosAntt.class);
 
 	@Autowired
 	ParseListaVendasToAntt parseListaVendasToAntt;
 
 	@Autowired
-	EnviaDadosRabbitService enviaDadosRabbitService;
+	EnviaDadosRabbit enviaDadosRabbitService;
 
 	@Autowired
 	ClienteRjConsultoresRepository clienteRjConsultoresRepository;
@@ -48,20 +49,16 @@ public class EnviaDadosAnttService {
 	@Autowired
 	private Config config;
 
-	public void enviar(ListaVendasModel listaVendas, ClienteRjConsultores clienteRj) {
-		LOGGER.info("Enviar Dados ANTT");
-
+	public void enviar(ListaVendas listaVendas, ClienteRjConsultores clienteRj) {
 		List<String> listaLogVendaJson = new ArrayList<String>();
 
-		for (VendaModel venda : listaVendas.getListaVendas()) {
+		for (Venda venda : listaVendas.getListaVendas()) {
 			listaLogVendaJson.add(parseListaVendasToAntt.parse(venda));
 		}
 
 		for (String json : listaLogVendaJson) {
-			boolean sendToRabbit = postAntt(json);
-			if (sendToRabbit) {
-				enviaDadosRabbitService.enviar(json, clienteRj);
-			}
+			boolean postAnttSuccess = postAntt(json);
+			enviaDadosRabbitService.enviar(json, clienteRj, postAnttSuccess);
 		}
 
 		String dataUltimaVenda = vendasUtil.getDataHoraUltimaVenda(listaVendas);
@@ -83,6 +80,7 @@ public class EnviaDadosAnttService {
 
 		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
 		interceptors.add(new AnttAuthenticationInterceptor(config.getAnttToken()));
+
 		restTemplate.setInterceptors(interceptors);
 
 		try {
@@ -103,8 +101,8 @@ public class EnviaDadosAnttService {
 			for (AnttErrorList errorList : error.getErros()) {
 				LOGGER.info("Erro: {} - Descricao: {}", errorList.getCodigo(), errorList.getDescricao());
 			}
-
-			LOGGER.error(json);
+		} catch (RestClientException e) {
+			LOGGER.error("Erro - {}", e.toString());
 		}
 		return postSuccess;
 	}
