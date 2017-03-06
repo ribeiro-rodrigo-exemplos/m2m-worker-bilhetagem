@@ -1,6 +1,10 @@
 package br.com.m2msolutions.workerbilhetagem.queue;
 
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -37,6 +41,32 @@ public class RabbitConfig {
 	public RabbitTemplate rabbitTemplate() {
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
 		return rabbitTemplate;
+	}
+
+	@Bean
+	public Queue persistenceRouteQueue() {
+		return new Queue(config.getQueueName());
+	}
+
+	@Bean
+	public Queue reprocessRouteQueue() {
+		return new Queue(config.getQueueReprocessName());
+	}
+
+	@Bean
+	public FanoutExchange persistenceRouteExchange() {
+		FanoutExchange exchange = new FanoutExchange(config.getRabbitRoutingKey());
+		return exchange;
+	}
+
+	@Bean
+	public Binding persistenceRouteBinding() {
+		return BindingBuilder.bind(persistenceRouteQueue()).to(persistenceRouteExchange());
+	}
+
+	@Bean
+	public Binding reprocessRouteBinding() {
+		return BindingBuilder.bind(reprocessRouteQueue()).to(persistenceRouteExchange());
 	}
 
 }

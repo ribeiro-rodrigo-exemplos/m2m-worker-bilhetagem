@@ -1,28 +1,35 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 
+import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.InformacoesPassageiro;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogVendaPassagem;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 
 @Component
 public class ParseListaVendasToAntt {
+	private Logger LOGGER = LoggerFactory.getLogger(ParseListaVendasToAntt.class);
 
 	@Autowired
 	private VendasUtil vendasUtil;
 
-	public String parse(Venda venda) {
+	public String parse(Venda venda, ClienteRjConsultores clienteRj) {
 		LogVendaPassagem logVendaPassagem = new LogVendaPassagem();
 
 		logVendaPassagem.setIdLog(venda.getIdLog());
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
 
-		logVendaPassagem.setCnpjEmpresa("22832012000115");
-		// logVendaPassagem.setCnpjEmpresa(venda.getCnpj());
+		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
+			logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
+		} else {
+			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
+		}
 
 		logVendaPassagem.setNumeroSerieEquipamentoFiscal(venda.getNumSerie());
 		logVendaPassagem.setNumeroBilheteEmbarque(

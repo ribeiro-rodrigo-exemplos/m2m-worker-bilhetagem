@@ -37,12 +37,13 @@ public class EnviaDadosRabbit {
 		try {
 			if (postAnttSuccess) {
 				rabbitTemplate.convertAndSend(config.getQueueName(), data);
+
 				LOGGER.info("Informacao enviada a Fila: {}  - Cliente: {}", config.getQueueName(),
-						clienteRj.getCliente().getNome());
+						clienteRj.getCliente().getNmNome());
 			} else {
 				rabbitTemplate.convertAndSend(config.getQueueReprocessName(), data);
 				LOGGER.error("Informacao enviada a Fila: {} - Cliente: {}", config.getQueueReprocessName(),
-						clienteRj.getCliente().getNome());
+						clienteRj.getCliente().getNmNome());
 			}
 		} catch (AmqpException ex) {
 			LOGGER.error("Erro ao Enviar Informacao a Fila: {}", config.getQueueName());

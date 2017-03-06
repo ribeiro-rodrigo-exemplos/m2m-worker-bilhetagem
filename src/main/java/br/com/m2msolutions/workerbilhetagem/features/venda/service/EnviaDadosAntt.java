@@ -53,7 +53,7 @@ public class EnviaDadosAntt {
 		List<String> listaLogVendaJson = new ArrayList<String>();
 
 		for (Venda venda : listaVendas.getListaVendas()) {
-			listaLogVendaJson.add(parseListaVendasToAntt.parse(venda));
+			listaLogVendaJson.add(parseListaVendasToAntt.parse(venda, clienteRj));
 		}
 
 		for (String json : listaLogVendaJson) {
@@ -65,7 +65,7 @@ public class EnviaDadosAntt {
 		clienteRj.setDataEnvio(dataUltimaVenda);
 		clienteRjConsultoresRepository.save(clienteRj);
 
-		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNome(), dataUltimaVenda);
+		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), dataUltimaVenda);
 	}
 
 	private boolean postAntt(String json) {

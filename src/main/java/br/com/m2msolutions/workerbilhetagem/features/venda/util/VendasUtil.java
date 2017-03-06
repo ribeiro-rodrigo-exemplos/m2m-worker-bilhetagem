@@ -151,14 +151,24 @@ public class VendasUtil {
 		if ((cpf == null) || (cpf.length() != 11))
 			return false;
 
-		cpf = cpf.replaceAll("[^0-9]", "");
-		Integer digito1 = calcularDigito(cpf.substring(0, 9), pesoCPF);
-		Integer digito2 = calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
-		return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
+		Integer digito1 = null;
+		Integer digito2 = null;
+
+		boolean validCpf = false;
+
+		try {
+			cpf = cpf.replaceAll("[^0-9]", "");
+			digito1 = calcularDigito(cpf.substring(0, 9), pesoCPF);
+			digito2 = calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
+			validCpf = cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
+		} catch (Exception e) {
+			LOGGER.error(e.toString());
+		}
+		return validCpf;
 	}
 
 	public boolean isValidCNPJ(String cnpj) {
-		if ((cnpj == null) || (cnpj.length() != 14))
+		if ((cnpj == null) || (cnpj.length() != 14) || ("".equals(cnpj.replace(" ", ""))))
 			return false;
 
 		Integer digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ);

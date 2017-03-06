@@ -30,7 +30,7 @@ public class BuscaDadosCliente {
 		try {
 			for (ClienteRjConsultores clienteRj : clienteRjConsultoresRepository.findAll()) {
 				LOGGER.info("Cliente: {} - Cod Conexao: {} - Cod Empresa: {} - Ultima Consulta: {}",
-						clienteRj.getCliente().getNome(), clienteRj.getCodConexao(), clienteRj.getCodCliente(),
+						clienteRj.getCliente().getNmNome(), clienteRj.getCodConexao(), clienteRj.getCodCliente(),
 						clienteRj.getDataEnvio());
 				realizarBuscaVendas.realizarBuscaVendas(clienteRj);
 			}

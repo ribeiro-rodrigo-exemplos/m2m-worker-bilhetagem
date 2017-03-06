@@ -16,6 +16,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.m2msolutions.workerbilhetagem.authentication.RjAuthenticationInterceptor;
@@ -56,7 +57,7 @@ public class BuscaVendas {
 					for (Venda venda : listaVendasModel.getListaVendas()) {
 						if (venda.getCodRetorno() != null) {
 							erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
-							LOGGER.error("Erro - {} - Cliente: {}", erro, clienteRj.getCliente().getNome());
+							LOGGER.error("Erro - {} - Cliente: {}", erro, clienteRj.getCliente().getNmNome());
 						}
 					}
 					if (erro == null) {
@@ -73,7 +74,7 @@ public class BuscaVendas {
 			LOGGER.error("Erro - {}", erro);
 		} catch (HttpServerErrorException ex) {
 			erro = CodigoErroEnum.valueOf("Cod" + ex.getStatusCode());
-			LOGGER.error("Erro - {} - Cliente: {} ", erro, clienteRj.getCliente().getNome());
+			LOGGER.error("Erro - {} - Cliente: {} ", erro, clienteRj.getCliente().getNmNome());
 		}
 		return listaVendas;
 	}

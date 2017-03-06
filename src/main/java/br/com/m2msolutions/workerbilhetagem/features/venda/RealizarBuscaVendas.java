@@ -26,7 +26,7 @@ public class RealizarBuscaVendas {
 	private VendasUtil vendasUtil;
 
 	@Async
-	public void realizarBuscaVendas(ClienteRjConsultores clienteRj) {
+	public void realizarBuscaVendas(ClienteRjConsultores clienteRj) throws InterruptedException {
 		String url = vendasUtil.createUrl(clienteRj);
 
 		if (!"".equals(url)) {
