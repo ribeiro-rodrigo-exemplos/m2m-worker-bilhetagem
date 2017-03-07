@@ -2,6 +2,7 @@ package br.com.m2msolutions.workerbilhetagem.features.venda.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import javax.xml.bind.JAXBException;
 
@@ -13,10 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.m2msolutions.workerbilhetagem.authentication.RjAuthenticationInterceptor;
@@ -34,7 +35,7 @@ public class BuscaVendas {
 	@Autowired
 	private Config config;
 
-	public ListaVendas buscarVendas(String url, ClienteRjConsultores clienteRj) {
+	public Future<ListaVendas> buscarVendas(String url, ClienteRjConsultores clienteRj) {
 		CodigoErroEnum erro = null;
 		ListaVendas listaVendas = null;
 
@@ -76,6 +77,6 @@ public class BuscaVendas {
 			erro = CodigoErroEnum.valueOf("Cod" + ex.getStatusCode());
 			LOGGER.error("Erro - {} - Cliente: {} ", erro, clienteRj.getCliente().getNmNome());
 		}
-		return listaVendas;
+		return new AsyncResult<>(listaVendas);
 	}
 }

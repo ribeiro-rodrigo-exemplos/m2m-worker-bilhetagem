@@ -1,5 +1,8 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +29,14 @@ public class RealizarBuscaVendas {
 	private VendasUtil vendasUtil;
 
 	@Async
-	public void realizarBuscaVendas(ClienteRjConsultores clienteRj) throws InterruptedException {
+	public void realizarBuscaVendas(ClienteRjConsultores clienteRj) throws InterruptedException, ExecutionException {
 		String url = vendasUtil.createUrl(clienteRj);
 
 		if (!"".equals(url)) {
-			ListaVendas listaVendas = buscaVendasService.buscarVendas(url, clienteRj);
-			if (listaVendas != null) {
-				enviaDadosAntt.enviar(listaVendas, clienteRj);
+			Future<ListaVendas> listaVendas = buscaVendasService.buscarVendas(url, clienteRj);
+			if (listaVendas.get() != null) {
+				if (listaVendas.isDone())
+					enviaDadosAntt.enviar(listaVendas.get(), clienteRj);
 			}
 		} else {
 			LOGGER.error("{} - URL Incorreta para consulta", url);

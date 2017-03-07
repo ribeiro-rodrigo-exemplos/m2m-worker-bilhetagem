@@ -1,5 +1,8 @@
 package br.com.m2msolutions.workerbilhetagem.features.cliente;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +39,7 @@ public class ClienteRjConsultores {
 	@NotNull
 	@Column(name = "dt_sincronismo_venda_bilhetes")
 	private String dataEnvio;
-	
+
 	public ClienteRjConsultores() {
 	}
 
@@ -72,7 +75,12 @@ public class ClienteRjConsultores {
 	}
 
 	public String getDataEnvio() {
-		return dataEnvio;
+		if (dataEnvio == null) {
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+					.format(new Date(System.currentTimeMillis() - 900 * 1000));
+		} else {
+			return dataEnvio;
+		}
 	}
 
 	public void setDataEnvio(String dataEnvio) {
