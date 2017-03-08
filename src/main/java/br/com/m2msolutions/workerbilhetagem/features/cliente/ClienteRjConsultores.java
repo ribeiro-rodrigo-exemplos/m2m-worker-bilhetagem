@@ -40,14 +40,20 @@ public class ClienteRjConsultores {
 	@Column(name = "dt_sincronismo_venda_bilhetes")
 	private String dataEnvio;
 
+	@NotNull
+	@Column(name = "dt_sincronismo_servicos")
+	private String dataSincronismoServicos;
+
 	public ClienteRjConsultores() {
 	}
 
-	public ClienteRjConsultores(Cliente cliente, String codConexao, String codCliente, String dataEnvio) {
+	public ClienteRjConsultores(Cliente cliente, String codConexao, String codCliente, String dataEnvio,
+			String dataSincronismoServicos) {
 		this.cliente = cliente;
 		this.codConexao = codConexao;
 		this.codCliente = codCliente;
 		this.dataEnvio = dataEnvio;
+		this.dataSincronismoServicos = dataSincronismoServicos;
 	}
 
 	public Cliente getCliente() {
@@ -86,4 +92,13 @@ public class ClienteRjConsultores {
 	public void setDataEnvio(String dataEnvio) {
 		this.dataEnvio = dataEnvio;
 	}
+
+	public String getDataSincronismoServicos() {
+		return dataSincronismoServicos;
+	}
+
+	public void setDataSincronismoServicos(String dataSincronismoServicos) {
+		this.dataSincronismoServicos = dataSincronismoServicos;
+	}
+
 }

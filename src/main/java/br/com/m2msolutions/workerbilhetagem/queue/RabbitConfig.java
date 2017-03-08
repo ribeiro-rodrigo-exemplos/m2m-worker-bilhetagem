@@ -3,6 +3,8 @@ package br.com.m2msolutions.workerbilhetagem.queue;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.BindingBuilder.DirectExchangeRoutingKeyConfigurer;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -54,18 +56,18 @@ public class RabbitConfig {
 	}
 
 	@Bean
-	public FanoutExchange persistenceRouteExchange() {
-		FanoutExchange exchange = new FanoutExchange(config.getRabbitRoutingKey());
+	public DirectExchange persistenceRouteExchange() {
+		DirectExchange exchange = new DirectExchange(config.getRabbitRoutingKey());
 		return exchange;
 	}
 
 	@Bean
-	public Binding persistenceRouteBinding() {
+	public DirectExchangeRoutingKeyConfigurer persistenceRouteBinding() {
 		return BindingBuilder.bind(persistenceRouteQueue()).to(persistenceRouteExchange());
 	}
 
 	@Bean
-	public Binding reprocessRouteBinding() {
+	public DirectExchangeRoutingKeyConfigurer reprocessRouteBinding() {
 		return BindingBuilder.bind(reprocessRouteQueue()).to(persistenceRouteExchange());
 	}
 
