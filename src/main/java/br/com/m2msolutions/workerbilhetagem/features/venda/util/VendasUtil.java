@@ -60,6 +60,7 @@ public class VendasUtil {
 
 		} catch (Exception e) {
 			LOGGER.error("Error - " + e.toString());
+			LOGGER.error(dataCompleta);
 		}
 		return data;
 	}
@@ -77,6 +78,7 @@ public class VendasUtil {
 
 		} catch (Exception e) {
 			LOGGER.error("Error - " + e.toString());
+			LOGGER.error(dataCompleta);
 		}
 		return hora;
 	}
@@ -94,6 +96,7 @@ public class VendasUtil {
 
 		} catch (Exception e) {
 			LOGGER.error("Error - " + e.toString());
+			LOGGER.error("Data: {} - Hora: {}", date, hour);
 		}
 		return dateTime;
 	}
@@ -117,6 +120,7 @@ public class VendasUtil {
 
 		} catch (Exception e) {
 			LOGGER.error("Error - " + e.toString());
+			LOGGER.error(date);
 		}
 		return fullDate;
 	}
@@ -133,6 +137,7 @@ public class VendasUtil {
 
 		} catch (Exception e) {
 			LOGGER.error("Error - " + e.toString());
+			LOGGER.error(hour);
 		}
 		return fullHour;
 	}
