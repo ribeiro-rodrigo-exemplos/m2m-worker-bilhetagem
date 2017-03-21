@@ -5,7 +5,7 @@
 
 	<groupId>br.com.m2msolutions.workerbilhetagem</groupId>
 	<artifactId>m2m-worker-bilhetagem</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>m2m-worker-bilhetagem</name>
