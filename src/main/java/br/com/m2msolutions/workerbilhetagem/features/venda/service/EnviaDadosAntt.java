@@ -98,6 +98,8 @@ public class EnviaDadosAntt {
 			LOGGER.error("Erro ao Enviar Dados ANTT - Total Erros: {} - Codigo: {} - Mensagem: {}",
 					error.getErros().size(), error.getCodigo(), error.getMensagem());
 
+			LOGGER.error(json);
+
 			for (AnttErrorList errorList : error.getErros()) {
 				LOGGER.info("Erro: {} - Descricao: {}", errorList.getCodigo(), errorList.getDescricao());
 			}

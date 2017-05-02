@@ -48,7 +48,18 @@ public class Config {
 	@Value("${savedatatofile}")
 	private boolean saveDataToFile;
 
-	public String getRjWebServiceUrl() {
+	@Value("${url-zona}")
+    private String urlZona;
+
+    public String getUrlZona() {
+        return urlZona;
+    }
+
+    public void setUrlZona(String urlZona) {
+        this.urlZona = urlZona;
+    }
+
+    public String getRjWebServiceUrl() {
 		return RjWebServiceUrl;
 	}
 

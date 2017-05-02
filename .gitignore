@@ -24,6 +24,8 @@ nbdist/
 .nb-gradle/
 
 *.log
+var/log/
+var/log/*
 node_modules
 node_modules/*
 .vscode/

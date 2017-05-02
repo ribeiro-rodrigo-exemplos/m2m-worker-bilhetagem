@@ -1,5 +1,6 @@
 package br.com.m2msolutions.workerbilhetagem.core;
 
+import br.com.m2msolutions.workerbilhetagem.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +18,20 @@ public class BuscaDadosCliente {
 	private final ClienteRjConsultoresRepository clienteRjConsultoresRepository;
 
 	private RealizarBuscaVendas realizarBuscaVendas;
+	private Config config;
 
 	@Autowired
 	public BuscaDadosCliente(ClienteRjConsultoresRepository clienteRjConsultoresRepository,
-			RealizarBuscaVendas realizarBuscaVendas) {
+			RealizarBuscaVendas realizarBuscaVendas,Config config) {
 		this.clienteRjConsultoresRepository = clienteRjConsultoresRepository;
 		this.realizarBuscaVendas = realizarBuscaVendas;
+		this.config = config;
 	}
 
 	@Scheduled(fixedRateString = "${schedule.timer}")
 	public void buscarDadosClientes() {
 		try {
-			for (ClienteRjConsultores clienteRj : clienteRjConsultoresRepository.findAll()) {
+			for (ClienteRjConsultores clienteRj : clienteRjConsultoresRepository.findAllByCliente_UrlZona(config.getUrlZona())) {
 				LOGGER.info("Cliente: {} - Cod Conexao: {} - Cod Empresa: {} - Ultima Consulta: {}",
 						clienteRj.getCliente().getNmNome(), clienteRj.getCodConexao(), clienteRj.getCodCliente(),
 						clienteRj.getDataEnvio());

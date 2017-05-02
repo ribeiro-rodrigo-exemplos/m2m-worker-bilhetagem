@@ -87,7 +87,7 @@ public class VendasUtil {
 		String dateTime = "";
 		hour = ("0000" + hour).substring(hour.length());
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyMMdd HHmm");
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HHmm");
 			DateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			Date date_ = dateFormat.parse(date + " " + hour);

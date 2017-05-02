@@ -62,7 +62,7 @@ public class LogVendaPassagem {
 	}
 
 	public void setNumeroSerieEquipamentoFiscal(String numeroSerieEquipamentoFiscal) {
-		this.numeroSerieEquipamentoFiscal = numeroSerieEquipamentoFiscal;
+		this.numeroSerieEquipamentoFiscal = numeroSerieEquipamentoFiscal == null ? "0":numeroSerieEquipamentoFiscal;
 	}
 
 	public String getNumeroBilheteEmbarque() {
@@ -102,7 +102,7 @@ public class LogVendaPassagem {
 	}
 
 	public void setIdentificacaoLinha(String identificacaoLinha) {
-		this.identificacaoLinha = identificacaoLinha;
+		this.identificacaoLinha = identificacaoLinha != null ? identificacaoLinha.replace("-",""):"0000";
 	}
 
 	public String getIdPontoOrigemViagem() {
@@ -190,7 +190,7 @@ public class LogVendaPassagem {
 	}
 
 	public void setPercentualDesconto(String percentualDesconto) {
-		this.percentualDesconto = percentualDesconto;
+		this.percentualDesconto = percentualDesconto == null ? "0.0" : percentualDesconto;
 	}
 
 	public String getAliquotaICMS() {
@@ -206,7 +206,8 @@ public class LogVendaPassagem {
 	}
 
 	public void setValorPedagio(String valorPedagio) {
-		this.valorPedagio = valorPedagio;
+
+	    this.valorPedagio = valorPedagio == null ? "0.0" : valorPedagio;
 	}
 
 	public String getValorTaxaEmbarque() {
@@ -214,7 +215,7 @@ public class LogVendaPassagem {
 	}
 
 	public void setValorTaxaEmbarque(String valorTaxaEmbarque) {
-		this.valorTaxaEmbarque = valorTaxaEmbarque;
+		this.valorTaxaEmbarque = valorTaxaEmbarque == null ? "0.0":valorTaxaEmbarque;
 	}
 
 	public String getValorTotal() {
@@ -222,7 +223,7 @@ public class LogVendaPassagem {
 	}
 
 	public void setValorTotal(String valorTotal) {
-		this.valorTotal = valorTotal;
+		this.valorTotal = valorTotal == null ? "0":valorTotal;
 	}
 
 	public String getOrigemEmissao() {
