@@ -111,7 +111,7 @@ public class VendasUtil {
 	public String parseStringDateToUTC(String date) {
 		String fullDate = "";
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyMMdd");
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 			DateFormat newDateFormat = new SimpleDateFormat("yyyyMMdd");
 
 			Date date_ = dateFormat.parse(date);
