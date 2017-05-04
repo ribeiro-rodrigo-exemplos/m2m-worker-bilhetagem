@@ -17,8 +17,8 @@ public class Cliente implements Serializable {
 
 	@Id
 	@Column(name = "id_cliente")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long idCliente;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer idCliente;
 
 	@Column(name = "nm_nome")
 	private String nmNome;
@@ -95,7 +95,7 @@ public class Cliente implements Serializable {
 	protected Cliente() {
 	}
 
-	public Cliente(Long idCliente, String nmNome, String nmWorker, String dsTimezone, String nmWorkerSinotico,
+	public Cliente(Integer idCliente, String nmNome, String nmWorker, String dsTimezone, String nmWorkerSinotico,
 			String flAtivo, String urlZona, String idUsuario, String urlLogin, String ipPedis, String cdCnpj,
 			String nmEmail, String nuTelefone, String nmContato, String nuUsuarios, String flSituacao, String dsMotivo,
 			String limiteVeiculoMeuonibus, String dtUltimaAlteracao, String nmUsuarioAlteracao, String emailMeuOnibus,
@@ -127,11 +127,11 @@ public class Cliente implements Serializable {
 		this.nuJornadaTrabalho = nuJornadaTrabalho;
 	}
 
-	public Long getIdCliente() {
+	public Integer getIdCliente() {
 		return idCliente;
 	}
 
-	public void setIdCliente(Long idCliente) {
+	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
 	}
 
