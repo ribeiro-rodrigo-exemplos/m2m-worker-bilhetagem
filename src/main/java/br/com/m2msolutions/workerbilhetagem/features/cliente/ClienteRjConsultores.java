@@ -1,6 +1,8 @@
 package br.com.m2msolutions.workerbilhetagem.features.cliente;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -33,13 +35,17 @@ public class ClienteRjConsultores {
 
 	@NotNull
 	@Column(name = "dt_sincronismo_servicos")
-	private String dataSincronismoServicos;
+    @Temporal(TemporalType.DATE)
+	private Date dataSincronismoServicos;
+
+	@Transient
+	private final static String datePattern = "yyyy-MM-dd HH:mm:ss";
 
 	public ClienteRjConsultores() {
 	}
 
 	public ClienteRjConsultores(Cliente cliente, String codConexao, String codCliente, String dataEnvio,
-			String dataSincronismoServicos) {
+			Date dataSincronismoServicos) {
 		this.cliente = cliente;
 		this.codConexao = codConexao;
 		this.codCliente = codCliente;
@@ -73,22 +79,37 @@ public class ClienteRjConsultores {
 
 	public String getDataEnvio() {
 		if (dataEnvio == null) {
-			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+			return new SimpleDateFormat(datePattern)
 					.format(new Date(System.currentTimeMillis() - 900 * 1000));
 		} else {
 			return dataEnvio;
 		}
 	}
 
+	public void nextMinute(){
+	    try{
+            if(dataEnvio != null){
+                Date data = new SimpleDateFormat(datePattern).parse(dataEnvio);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(data);
+                calendar.add(Calendar.MINUTE,1);
+                dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
+            }
+        }
+        catch (ParseException e){
+	        throw new RuntimeException(e);
+        }
+    }
+
 	public void setDataEnvio(String dataEnvio) {
 		this.dataEnvio = dataEnvio;
 	}
 
-	public String getDataSincronismoServicos() {
+	public Date getDataSincronismoServicos() {
 		return dataSincronismoServicos;
 	}
 
-	public void setDataSincronismoServicos(String dataSincronismoServicos) {
+	public void setDataSincronismoServicos(Date dataSincronismoServicos) {
 		this.dataSincronismoServicos = dataSincronismoServicos;
 	}
 

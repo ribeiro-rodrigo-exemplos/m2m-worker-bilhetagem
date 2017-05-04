@@ -61,11 +61,10 @@ public class EnviaDadosAntt {
 			enviaDadosRabbitService.enviar(json, clienteRj, postAnttSuccess);
 		}
 
-		String dataUltimaVenda = vendasUtil.getDataHoraUltimaVenda(listaVendas);
-		clienteRj.setDataEnvio(dataUltimaVenda);
+		clienteRj.nextMinute();
 		clienteRjConsultoresRepository.save(clienteRj);
 
-		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), dataUltimaVenda);
+		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), clienteRj.getDataEnvio());
 	}
 
 	private boolean postAntt(String json) {

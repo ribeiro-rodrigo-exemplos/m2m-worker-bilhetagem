@@ -65,7 +65,7 @@ public class VendasUtil {
 		return data;
 	}
 
-	private String parseHour(String dataCompleta) {
+	public String parseHour(String dataCompleta) {
 		String hora = "";
 
 		try {

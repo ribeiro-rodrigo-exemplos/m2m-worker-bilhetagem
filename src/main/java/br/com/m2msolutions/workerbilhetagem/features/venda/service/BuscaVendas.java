@@ -3,9 +3,12 @@ package br.com.m2msolutions.workerbilhetagem.features.venda.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
 
+import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,8 @@ public class BuscaVendas {
 
 	@Autowired
 	private Config config;
+	@Autowired
+	private VendasUtil vendasUtil;
 
 	public Future<ListaVendas> buscarVendas(String url, ClienteRjConsultores clienteRj) {
 		CodigoErroEnum erro = null;
@@ -55,15 +60,19 @@ public class BuscaVendas {
 				try {
 					ListaVendas listaVendasModel = ParseXmlToListaVendas.parse(listaVendasXml);
 
-					for (Venda venda : listaVendasModel.getListaVendas()) {
-						if (venda.getCodRetorno() != null) {
-							erro = CodigoErroEnum.valueOf("Cod" + venda.getCodRetorno());
-							LOGGER.error("Erro - {} - Cliente: {}", erro, clienteRj.getCliente().getNmNome());
-						}
-					}
-					if (erro == null) {
-						listaVendas = listaVendasModel;
-					}
+					List<Venda> vendas = listaVendasModel
+                                            .getListaVendas()
+                                                .stream()
+                                                    .filter(v ->
+                                                                v.getHoraEmissao().equals(
+                                                                                            vendasUtil.parseHour(clienteRj.getDataEnvio())
+                                                                                          )
+                                                           )
+                                                    .collect(Collectors.toList());
+
+					listaVendas = new ListaVendas();
+                    listaVendas.setListaVendas(vendas);
+
 				} catch (JAXBException e) {
 					LOGGER.error("Erro - {}", e.toString());
 				}
