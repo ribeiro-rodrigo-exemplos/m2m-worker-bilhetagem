@@ -2,6 +2,10 @@ package br.com.m2msolutions.workerbilhetagem.features.venda.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LogVendaPassagem {
 
@@ -34,6 +38,7 @@ public class LogVendaPassagem {
     private String numBilheteImpresso;
     private String numServico;
     private String status;
+    private String dataHoraEvento;
 
 	private String origemEmissao;
 
@@ -59,6 +64,22 @@ public class LogVendaPassagem {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getDataHoraEvento() {
+        return dataHoraEvento;
+    }
+
+    public void setDataHoraEvento(String dataHoraEvento) {
+
+	    try{
+
+            Date data = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dataHoraEvento);
+            this.dataHoraEvento = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(data);
+
+        }catch (ParseException e){
+            throw new RuntimeException(e);
+        }
     }
 
     public void setStatus(String status) {

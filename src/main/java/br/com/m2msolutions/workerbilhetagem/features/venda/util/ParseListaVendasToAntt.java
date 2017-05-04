@@ -58,6 +58,7 @@ public class ParseListaVendasToAntt {
 		logVendaPassagem.setNumBilheteImpresso(venda.getNumBilheteImpresso());
 		logVendaPassagem.setNumServico(venda.getNumServico());
 		logVendaPassagem.setStatus(venda.getStatus());
+		logVendaPassagem.setDataHoraEvento(clienteRj.getDataEnvio());
 
 		InformacoesPassageiro infoPassageiro = new InformacoesPassageiro();
 
