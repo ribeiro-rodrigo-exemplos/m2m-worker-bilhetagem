@@ -31,13 +31,41 @@ public class LogVendaPassagem {
 	private String valorTotal;
 	private InformacoesPassageiro informacoesPassageiro;
 
+    private String numBilheteImpresso;
+    private String numServico;
+    private String status;
+
 	private String origemEmissao;
 
 	public String getIdLog() {
 		return idLog;
 	}
 
-	public void setIdLog(String idLog) {
+    public String getNumBilheteImpresso() {
+        return numBilheteImpresso;
+    }
+
+    public void setNumBilheteImpresso(String numBilheteImpresso) {
+        this.numBilheteImpresso = numBilheteImpresso;
+    }
+
+    public String getNumServico() {
+        return numServico;
+    }
+
+    public void setNumServico(String numServico) {
+        this.numServico = numServico;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setIdLog(String idLog) {
 		this.idLog = idLog;
 	}
 
