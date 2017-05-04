@@ -1,5 +1,6 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,7 +13,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ListaVendas {
 
 	@XmlElement(name = "venda")
-	private List<Venda> listaVendas = null;
+	private List<Venda> listaVendas;
+
+	public ListaVendas(){
+	    listaVendas = new ArrayList<>();
+    }
 
 	public List<Venda> getListaVendas() {
 		return listaVendas;

@@ -2,6 +2,7 @@ package br.com.m2msolutions.workerbilhetagem.features.venda.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -58,20 +59,26 @@ public class BuscaVendas {
 			if (response.getHeaders().getContentType().equals(MediaType.TEXT_XML)) {
 				String listaVendasXml = response.getBody();
 				try {
-					ListaVendas listaVendasModel = ParseXmlToListaVendas.parse(listaVendasXml);
 
-					List<Venda> vendas = listaVendasModel
-                                            .getListaVendas()
-                                                .stream()
-                                                    .filter(v ->
-                                                                v.getHoraEmissao().equals(
-                                                                                            vendasUtil.parseHour(clienteRj.getDataEnvio())
-                                                                                          )
-                                                           )
-                                                    .collect(Collectors.toList());
+				    Optional<ListaVendas> listaVendasModel = Optional.ofNullable(ParseXmlToListaVendas.parse(listaVendasXml));
 
-					listaVendas = new ListaVendas();
-                    listaVendas.setListaVendas(vendas);
+					if(listaVendasModel.isPresent()){
+
+					    List<Venda> vendas = listaVendasModel.get()
+                                .getListaVendas()
+                                .stream()
+                                .filter(v ->
+                                        v.getHoraEmissao() != null && v.getHoraEmissao().equals(
+                                                vendasUtil.parseHour(clienteRj.getDataEnvio())
+                                        )
+                                )
+                                .collect(Collectors.toList());
+
+                        listaVendas = new ListaVendas();
+                        listaVendas.setListaVendas(vendas);
+
+                    }
+
 
 				} catch (JAXBException e) {
 					LOGGER.error("Erro - {}", e.toString());
