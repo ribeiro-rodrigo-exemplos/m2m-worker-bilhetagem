@@ -50,15 +50,15 @@ public class EnviaDadosAntt {
 	private Config config;
 
 	public void enviar(ListaVendas listaVendas, ClienteRjConsultores clienteRj) {
-		List<String> listaLogVendaJson = new ArrayList<String>();
 
 		for (Venda venda : listaVendas.getListaVendas()) {
-			listaLogVendaJson.add(parseListaVendasToAntt.parse(venda, clienteRj));
-		}
-
-		for (String json : listaLogVendaJson) {
-			boolean postAnttSuccess = postAntt(json);
-			enviaDadosRabbitService.enviar(json, clienteRj, postAnttSuccess);
+			String json = parseListaVendasToAntt.parse(venda, clienteRj);
+			AnttMessageSuccess postAnttSuccess = postAntt(json);
+			if(postAnttSuccess != null){
+				venda.setIdTransacao(postAnttSuccess.getIdTransacao());
+				System.out.println(venda.getIdTransacao()+" ---- ");
+				enviaDadosRabbitService.enviar(venda, clienteRj, postAnttSuccess);
+			}
 		}
 
 		clienteRj.nextMinute();
@@ -67,9 +67,9 @@ public class EnviaDadosAntt {
 		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), clienteRj.getDataEnvio());
 	}
 
-	private boolean postAntt(String json) {
+	private AnttMessageSuccess postAntt(String json) {
 		Gson gson = new Gson();
-		boolean postSuccess = false;
+		AnttMessageSuccess anttSuccess = null;
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -86,10 +86,9 @@ public class EnviaDadosAntt {
 			HttpEntity<String> response = restTemplate.exchange(config.getAnttUrl(), HttpMethod.POST, entity,
 					String.class);
 
-			AnttMessageSuccess anttSuccess = gson.fromJson(response.getBody(), AnttMessageSuccess.class);
+			anttSuccess = gson.fromJson(response.getBody(), AnttMessageSuccess.class);
 			LOGGER.info("Mensagem: {} - idTransacao: {}", anttSuccess.getMensagem(), anttSuccess.getIdTransacao());
-
-			postSuccess = true;
+			anttSuccess.setSuccess(true);
 
 		} catch (HttpClientErrorException ex) {
 			AnttError error = gson.fromJson(ex.getResponseBodyAsString(), AnttError.class);
@@ -105,6 +104,7 @@ public class EnviaDadosAntt {
 		} catch (RestClientException e) {
 			LOGGER.error("Erro - {}", e.toString());
 		}
-		return postSuccess;
+
+		return anttSuccess;
 	}
 }
