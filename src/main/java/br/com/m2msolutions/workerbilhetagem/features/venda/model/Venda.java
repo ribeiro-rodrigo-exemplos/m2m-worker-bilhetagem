@@ -45,15 +45,6 @@ public class Venda {
 	private String valorTotal;
 	private String numBilheteEmbarque;
 	private String codRetorno;
-	private String idTransacao;
-
-	public String getIdTransacao() {
-		return idTransacao;
-	}
-
-	public void setIdTransacao(String idTransacao) {
-		this.idTransacao = idTransacao;
-	}
 
 	public String getIdLog() {
 		return idLog;

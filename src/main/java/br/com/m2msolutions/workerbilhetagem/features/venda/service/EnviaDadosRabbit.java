@@ -30,8 +30,8 @@ public class EnviaDadosRabbit {
 	@Autowired
 	ParseStringJsonToRabbitModel parseStringJsonToRabbitModel;
 
-	public void enviar(Venda venda, ClienteRjConsultores clienteRj, AnttMessageSuccess postAnttSuccess) {
-		String data = parseStringJsonToRabbitModel.parse(venda, clienteRj);
+	public void enviar(String json, ClienteRjConsultores clienteRj, AnttMessageSuccess postAnttSuccess) {
+		String data = parseStringJsonToRabbitModel.parse(json, clienteRj);
 
 		if (config.isSaveDataToFile())
 			vendasUtil.saveIntoFile(data, "example.json");

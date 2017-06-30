@@ -52,12 +52,11 @@ public class EnviaDadosAntt {
 	public void enviar(ListaVendas listaVendas, ClienteRjConsultores clienteRj) {
 
 		for (Venda venda : listaVendas.getListaVendas()) {
-			String json = parseListaVendasToAntt.parse(venda, clienteRj);
+			String json = parseListaVendasToAntt.parse(venda, clienteRj,null);
 			AnttMessageSuccess postAnttSuccess = postAntt(json);
 			if(postAnttSuccess != null){
-				venda.setIdTransacao(postAnttSuccess.getIdTransacao());
-				System.out.println(venda.getIdTransacao()+" ---- ");
-				enviaDadosRabbitService.enviar(venda, clienteRj, postAnttSuccess);
+				String jsonRabbit = parseListaVendasToAntt.parse(venda, clienteRj,postAnttSuccess.getIdTransacao());
+				enviaDadosRabbitService.enviar(jsonRabbit, clienteRj, postAnttSuccess);
 			}
 		}
 

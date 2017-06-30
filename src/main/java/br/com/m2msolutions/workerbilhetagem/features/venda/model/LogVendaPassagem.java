@@ -33,6 +33,7 @@ public class LogVendaPassagem {
 	private String valorPedagio;
 	private String valorTaxaEmbarque;
 	private String valorTotal;
+	private String transacaoId;
 	private InformacoesPassageiro informacoesPassageiro;
 
     private String numBilheteImpresso;
@@ -41,6 +42,14 @@ public class LogVendaPassagem {
     private String dataHoraEvento;
 
 	private String origemEmissao;
+
+	public String getTransacaoId() {
+		return transacaoId;
+	}
+
+	public void setTransacaoId(String transacaoId) {
+		this.transacaoId = transacaoId;
+	}
 
 	public String getIdLog() {
 		return idLog;
