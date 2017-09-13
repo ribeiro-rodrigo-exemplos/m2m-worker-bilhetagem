@@ -51,7 +51,14 @@ public class EnviaDadosAntt {
 
 	public void enviar(ListaVendas listaVendas, ClienteRjConsultores clienteRj) {
 
+		if(listaVendas.isForaDoPeriodo()){
+			clienteRj.setNow();
+			listaVendas.getListaVendas().clear();		}
+		else
+			clienteRj.nextMinute();
+
 		for (Venda venda : listaVendas.getListaVendas()) {
+
 			String json = parseListaVendasToAntt.parse(venda, clienteRj,null);
 			AnttMessageSuccess postAnttSuccess = postAntt(json);
 			if(postAnttSuccess != null){
@@ -60,7 +67,6 @@ public class EnviaDadosAntt {
 			}
 		}
 
-		clienteRj.nextMinute();
 		clienteRjConsultoresRepository.save(clienteRj);
 
 		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), clienteRj.getDataEnvio());

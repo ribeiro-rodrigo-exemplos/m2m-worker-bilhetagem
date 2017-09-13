@@ -86,6 +86,12 @@ public class ClienteRjConsultores {
 		}
 	}
 
+	public void setNow(){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MINUTE,calendar.get(Calendar.MINUTE)-5);
+		dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
+	}
+
 	public void nextMinute(){
 	    try{
             if(dataEnvio != null){

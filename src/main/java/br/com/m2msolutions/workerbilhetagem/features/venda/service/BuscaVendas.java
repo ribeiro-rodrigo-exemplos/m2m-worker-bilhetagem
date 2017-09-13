@@ -64,19 +64,24 @@ public class BuscaVendas {
 
 					if(listaVendasModel.isPresent()){
 
-					    List<Venda> vendas = listaVendasModel.get()
-                                .getListaVendas()
-                                .stream()
-                                .filter(v ->
-                                        v.getHoraEmissao() != null && v.getHoraEmissao().equals(
-                                                vendasUtil.parseHour(clienteRj.getDataEnvio())
-                                        )
-                                )
-                                .collect(Collectors.toList());
+					    listaVendas = listaVendasModel.get();
 
-                        listaVendas = new ListaVendas();
-                        listaVendas.setListaVendas(vendas);
+					    if(listaVendas.getListaVendas().size() == 1 && listaVendas.getListaVendas().get(0).getCodRetorno().equals("03"))
+					    	listaVendas.setForaDoPeriodo(true);
+					    else{
+							List<Venda> vendas = listaVendasModel.get()
+									.getListaVendas()
+									.stream()
+									.filter(v ->
+											v.getHoraEmissao() != null && v.getHoraEmissao().equals(
+													vendasUtil.parseHour(clienteRj.getDataEnvio())
+											)
+									)
+									.collect(Collectors.toList());
 
+							listaVendas = new ListaVendas();
+							listaVendas.setListaVendas(vendas);
+						}
                     }
 
 
