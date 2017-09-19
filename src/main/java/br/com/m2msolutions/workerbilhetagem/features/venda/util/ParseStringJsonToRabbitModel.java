@@ -19,6 +19,7 @@ public class ParseStringJsonToRabbitModel {
 	private Config config;
 
 	public String parse(String data, ClienteRjConsultores clienteRj) {
+
 		JsonElement element = new JsonParser().parse(data);
 		JsonObject jobject = element.getAsJsonObject();
 		jobject.addProperty("dt_atualizacao", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));

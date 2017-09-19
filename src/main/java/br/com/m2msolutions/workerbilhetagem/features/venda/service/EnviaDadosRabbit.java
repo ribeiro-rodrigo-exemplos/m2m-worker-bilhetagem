@@ -1,5 +1,7 @@
 package br.com.m2msolutions.workerbilhetagem.features.venda.service;
 
+import br.com.m2msolutions.workerbilhetagem.commom.AnttMessageSuccess;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -28,14 +30,14 @@ public class EnviaDadosRabbit {
 	@Autowired
 	ParseStringJsonToRabbitModel parseStringJsonToRabbitModel;
 
-	public void enviar(String json, ClienteRjConsultores clienteRj, boolean postAnttSuccess) {
+	public void enviar(String json, ClienteRjConsultores clienteRj, AnttMessageSuccess postAnttSuccess) {
 		String data = parseStringJsonToRabbitModel.parse(json, clienteRj);
 
 		if (config.isSaveDataToFile())
 			vendasUtil.saveIntoFile(data, "example.json");
 
 		try {
-			if (postAnttSuccess) {
+			if (postAnttSuccess != null && postAnttSuccess.isSuccess()) {
 				rabbitTemplate.convertAndSend(config.getQueueName(), data);
 
 				LOGGER.info("Informacao enviada a Fila: {}  - Cliente: {}", config.getQueueName(),

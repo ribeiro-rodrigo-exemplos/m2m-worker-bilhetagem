@@ -1,0 +1,54 @@
+application:
+  name: @name@
+  version: @version@
+
+schedule:
+  timer: 60000
+
+collection:
+  name: Bilhetes
+
+savedatatofile: FALSE
+
+rjconsultores:
+  webservice:
+    url: http://34.198.151.111:9991/WSMonitriip/busca/
+authentication:
+  rj:
+    username: m2m
+    password: rjm2mrj
+  antt:
+    token:  9890bf68-671a-4748-a34f-08391fdfc09c
+    url: http://appservices.antt.gov.br:8000/antt/monitriip.validacao/rest/InserirLogVendaPassagem
+
+spring:
+  datasource:
+    url: jdbc:mysql://172.18.107.248:3306/sso?zeroDateTimeBehavior=convertToNull
+    username: frota
+    password: frota
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+      dialect: org.hibernate.dialect.MySQL5Dialect
+  rabbitmq:
+    addresses: localhost
+    port: 5672
+    password: guest
+    username: guest
+    listener.auto-startup: false
+    queue:
+      name: lazypersistence
+      reprocess.name: bilhetes.monitriip.DLQ
+    routingkey: lazypersistence
+
+logging:
+  file: /var/log/m2m-worker-bilhetagem.log
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{0} - %msg%n'
+
+url-zona: http://znh.m2mcontrol.com.br/#/
+

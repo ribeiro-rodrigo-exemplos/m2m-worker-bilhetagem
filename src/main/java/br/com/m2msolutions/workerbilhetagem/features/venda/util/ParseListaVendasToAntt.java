@@ -19,7 +19,7 @@ public class ParseListaVendasToAntt {
 	@Autowired
 	private VendasUtil vendasUtil;
 
-	public String parse(Venda venda, ClienteRjConsultores clienteRj) {
+	public String parse(Venda venda, ClienteRjConsultores clienteRj,String transacaoId) {
 		LogVendaPassagem logVendaPassagem = new LogVendaPassagem();
 
 		logVendaPassagem.setIdLog(venda.getIdLog());
@@ -59,6 +59,8 @@ public class ParseListaVendasToAntt {
 		logVendaPassagem.setNumServico(venda.getNumServico());
 		logVendaPassagem.setStatus(venda.getStatus());
 		logVendaPassagem.setDataHoraEvento(clienteRj.getDataEnvio());
+		if(transacaoId != null)
+			logVendaPassagem.setTransacaoId(transacaoId);
 
 		InformacoesPassageiro infoPassageiro = new InformacoesPassageiro();
 
@@ -77,4 +79,6 @@ public class ParseListaVendasToAntt {
 
 		return listaVendasJson.toString();
 	}
+
+
 }
