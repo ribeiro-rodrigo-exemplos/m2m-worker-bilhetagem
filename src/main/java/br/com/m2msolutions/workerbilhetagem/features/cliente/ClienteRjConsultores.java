@@ -33,24 +33,17 @@ public class ClienteRjConsultores {
 	@Column(name = "dt_sincronismo_venda_bilhetes")
 	private String dataEnvio;
 
-	@NotNull
-	@Column(name = "dt_sincronismo_servicos")
-    @Temporal(TemporalType.DATE)
-	private Date dataSincronismoServicos;
-
 	@Transient
 	private final static String datePattern = "yyyy-MM-dd HH:mm:ss";
 
 	public ClienteRjConsultores() {
 	}
 
-	public ClienteRjConsultores(Cliente cliente, String codConexao, String codCliente, String dataEnvio,
-			Date dataSincronismoServicos) {
+	public ClienteRjConsultores(Cliente cliente, String codConexao, String codCliente, String dataEnvio) {
 		this.cliente = cliente;
 		this.codConexao = codConexao;
 		this.codCliente = codCliente;
 		this.dataEnvio = dataEnvio;
-		this.dataSincronismoServicos = dataSincronismoServicos;
 	}
 
 	public Cliente getCliente() {
@@ -110,13 +103,4 @@ public class ClienteRjConsultores {
 	public void setDataEnvio(String dataEnvio) {
 		this.dataEnvio = dataEnvio;
 	}
-
-	public Date getDataSincronismoServicos() {
-		return dataSincronismoServicos;
-	}
-
-	public void setDataSincronismoServicos(Date dataSincronismoServicos) {
-		this.dataSincronismoServicos = dataSincronismoServicos;
-	}
-
 }

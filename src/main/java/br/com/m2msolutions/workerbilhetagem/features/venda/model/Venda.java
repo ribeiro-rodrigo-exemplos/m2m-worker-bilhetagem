@@ -271,7 +271,7 @@ public class Venda {
 	}
 
 	public String getCodRetorno() {
-		return codRetorno;
+		return codRetorno == null ? "03" : codRetorno;
 	}
 
 	public void setCodRetorno(String codRetorno) {
