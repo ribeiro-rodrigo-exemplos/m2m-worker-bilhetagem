@@ -14,6 +14,8 @@ import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultore
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.ParseStringJsonToRabbitModel;
 import br.com.m2msolutions.workerbilhetagem.features.venda.util.VendasUtil;
 
+import java.util.Map;
+
 @Component
 public class EnviaDadosRabbit {
 	private Logger LOGGER = LoggerFactory.getLogger(EnviaDadosRabbit.class);
@@ -38,17 +40,24 @@ public class EnviaDadosRabbit {
 
 		try {
 			if (postAnttSuccess != null && postAnttSuccess.isSuccess()) {
-				rabbitTemplate.convertAndSend(config.getQueueName(), data);
+				rabbitTemplate.convertAndSend(config.getExchange(),config.getRabbitRoutingKey(), json,m-> {
+					Map<String,Object> headers = m.getMessageProperties().getHeaders();
+					m.getMessageProperties().setContentType("application/json");
+					headers.put("action","insert");
+					headers.put("collection","Bilhetes");
+					headers.put("database",config.getLazyPersistenceDatabase());
+					return m;
+				});
 
-				LOGGER.info("Informacao enviada a Fila: {}  - Cliente: {}", config.getQueueName(),
+				LOGGER.info("Informacao enviada ao exchange: {}  - Cliente: {}", config.getExchange(),
 						clienteRj.getCliente().getNmNome());
 			} else {
-				rabbitTemplate.convertAndSend(config.getQueueReprocessName(), data);
+				rabbitTemplate.convertAndSend(config.getQueueReprocessName(), json);
 				LOGGER.error("Informacao enviada a Fila: {} - Cliente: {}", config.getQueueReprocessName(),
 						clienteRj.getCliente().getNmNome());
 			}
 		} catch (AmqpException ex) {
-			LOGGER.error("Erro ao Enviar Informacao a Fila: {}", config.getQueueName());
+			LOGGER.error("Erro ao Enviar Informacao ao exchange: {}", config.getExchange());
 			LOGGER.error("Erro: {}", ex.toString());
 		}
 	}

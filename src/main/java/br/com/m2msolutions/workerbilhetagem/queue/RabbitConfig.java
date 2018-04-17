@@ -1,12 +1,7 @@
 package br.com.m2msolutions.workerbilhetagem.queue;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.core.BindingBuilder.DirectExchangeRoutingKeyConfigurer;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -46,29 +41,14 @@ public class RabbitConfig {
 	}
 
 	@Bean
-	public Queue persistenceRouteQueue() {
-		return new Queue(config.getQueueName());
-	}
-
-	@Bean
 	public Queue reprocessRouteQueue() {
 		return new Queue(config.getQueueReprocessName());
 	}
 
 	@Bean
-	public DirectExchange persistenceRouteExchange() {
-		DirectExchange exchange = new DirectExchange(config.getRabbitRoutingKey());
+	public TopicExchange persistenceRouteExchange() {
+		TopicExchange exchange = new TopicExchange(config.getExchange());
 		return exchange;
-	}
-
-	@Bean
-	public DirectExchangeRoutingKeyConfigurer persistenceRouteBinding() {
-		return BindingBuilder.bind(persistenceRouteQueue()).to(persistenceRouteExchange());
-	}
-
-	@Bean
-	public DirectExchangeRoutingKeyConfigurer reprocessRouteBinding() {
-		return BindingBuilder.bind(reprocessRouteQueue()).to(persistenceRouteExchange());
 	}
 
 }

@@ -41,9 +41,9 @@ spring:
     username: guest
     listener.auto-startup: false
     queue:
-      name: lazypersistence
       reprocess.name: bilhetes.monitriip.DLQ
-    routingkey: lazypersistence
+    exchange: monitriip
+    routingkey: monitriip.transmissoes
 
 logging:
   file: /var/log/m2m-worker-bilhetagem.log
@@ -51,4 +51,7 @@ logging:
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{0} - %msg%n'
 
 url-zona: http://znh.m2mcontrol.com.br/#/
+
+lazypersistence:
+  database: monitriip_znh
 

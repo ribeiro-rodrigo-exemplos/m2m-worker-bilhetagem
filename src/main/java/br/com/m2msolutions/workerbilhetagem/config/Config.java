@@ -21,8 +21,8 @@ public class Config {
 	@Value("${authentication.antt.token}")
 	private String anttToken;
 
-	@Value("${spring.rabbitmq.queue.name}")
-	private String queueName;
+	@Value("${spring.rabbitmq.exchange}")
+	private String exchange;
 
 	@Value("${spring.rabbitmq.queue.reprocess.name}")
 	private String queueReprocessName;
@@ -48,10 +48,21 @@ public class Config {
 	@Value("${savedatatofile}")
 	private boolean saveDataToFile;
 
+	@Value("${lazypersistence.database}")
+	private String lazyPersistenceDatabase;
+
 	@Value("${url-zona}")
     private String urlZona;
 
-    public String getUrlZona() {
+	public String getLazyPersistenceDatabase() {
+		return lazyPersistenceDatabase;
+	}
+
+	public void setLazyPersistenceDatabase(String lazyPersistenceDatabase) {
+		this.lazyPersistenceDatabase = lazyPersistenceDatabase;
+	}
+
+	public String getUrlZona() {
         return urlZona;
     }
 
@@ -83,12 +94,12 @@ public class Config {
 		this.passwordRJ = passwordRJ;
 	}
 
-	public String getQueueName() {
-		return queueName;
+	public String getExchange() {
+		return exchange;
 	}
 
-	public void setQueueName(String queueName) {
-		this.queueName = queueName;
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
 	}
 
 	public String getRabbitIp() {
