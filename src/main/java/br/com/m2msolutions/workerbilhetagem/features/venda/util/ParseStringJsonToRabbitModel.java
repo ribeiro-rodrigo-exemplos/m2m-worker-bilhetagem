@@ -24,12 +24,8 @@ public class ParseStringJsonToRabbitModel {
 		JsonObject jobject = element.getAsJsonObject();
 		jobject.addProperty("dt_atualizacao", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		jobject.addProperty("clienteId", clienteRj.getCliente().getIdCliente());
+		jobject.addProperty("idCliente",clienteRj.getCliente().getIdCliente());
 
-		JsonObject innerObject = new JsonObject();
-		innerObject.addProperty("collection", config.getCollectionName());
-		innerObject.addProperty("action", "insert");
-		innerObject.add("data", element);
-
-		return innerObject.toString();
+		return jobject.toString();
 	}
 }

@@ -22,7 +22,7 @@ public class ParseListaVendasToAntt {
 	public String parse(Venda venda, ClienteRjConsultores clienteRj,String transacaoId) {
 		LogVendaPassagem logVendaPassagem = new LogVendaPassagem();
 
-		logVendaPassagem.setIdLog(venda.getIdLog());
+		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
 
 		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
@@ -44,7 +44,7 @@ public class ParseListaVendasToAntt {
 		logVendaPassagem.setCodigoTipoServico(venda.getTipoServico());
 		logVendaPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
 		logVendaPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
-		logVendaPassagem.setCodigoTipoViagem(venda.getTipoViagem());
+		logVendaPassagem.setCodigoTipoViagem(Integer.parseInt(venda.getTipoViagem()));
 		logVendaPassagem.setNumeroPoltrona(venda.getPoltrona());
 		logVendaPassagem.setPlataformaEmbarque(venda.getPlataforma());
 		logVendaPassagem.setCodigoMotivoDesconto(venda.getMotivoDesconto());
@@ -57,7 +57,7 @@ public class ParseListaVendasToAntt {
 		logVendaPassagem.setOrigemEmissao(venda.getOrigemEmissao());
 		logVendaPassagem.setNumBilheteImpresso(venda.getNumBilheteImpresso());
 		logVendaPassagem.setNumServico(venda.getNumServico());
-		logVendaPassagem.setStatus(venda.getStatus());
+		logVendaPassagem.setStatus(Integer.parseInt(venda.getStatus()));
 		logVendaPassagem.setDataHoraEvento(clienteRj.getDataEnvio());
 		if(transacaoId != null)
 			logVendaPassagem.setTransacaoId(transacaoId);

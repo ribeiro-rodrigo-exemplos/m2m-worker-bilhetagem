@@ -9,7 +9,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LogVendaPassagem {
 
-	private String idLog;
+	private Integer idLog;
 	private String codigoBilheteEmbarque;
 	private String cnpjEmpresa;
 	private String numeroSerieEquipamentoFiscal;
@@ -23,7 +23,7 @@ public class LogVendaPassagem {
 	private String codigoTipoServico;
 	private String dataViagem;
 	private String horaViagem;
-	private String codigoTipoViagem;
+	private Integer codigoTipoViagem;
 	private String numeroPoltrona;
 	private String plataformaEmbarque;
 	private String codigoMotivoDesconto;
@@ -38,7 +38,7 @@ public class LogVendaPassagem {
 
     private String numBilheteImpresso;
     private String numServico;
-    private String status;
+    private Integer status;
     private String dataHoraEvento;
 
 	private String origemEmissao;
@@ -51,7 +51,7 @@ public class LogVendaPassagem {
 		this.transacaoId = transacaoId;
 	}
 
-	public String getIdLog() {
+	public Integer getIdLog() {
 		return idLog;
 	}
 
@@ -71,7 +71,7 @@ public class LogVendaPassagem {
         this.numServico = numServico;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -91,11 +91,11 @@ public class LogVendaPassagem {
         }
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public void setIdLog(String idLog) {
+    public void setIdLog(Integer idLog) {
 		this.idLog = idLog;
 	}
 
@@ -203,11 +203,11 @@ public class LogVendaPassagem {
 		this.horaViagem = horaViagem;
 	}
 
-	public String getCodigoTipoViagem() {
+	public Integer getCodigoTipoViagem() {
 		return codigoTipoViagem;
 	}
 
-	public void setCodigoTipoViagem(String codigoTipoViagem) {
+	public void setCodigoTipoViagem(Integer codigoTipoViagem) {
 		this.codigoTipoViagem = codigoTipoViagem;
 	}
 

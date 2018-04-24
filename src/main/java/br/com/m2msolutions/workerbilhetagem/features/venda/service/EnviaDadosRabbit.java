@@ -40,7 +40,7 @@ public class EnviaDadosRabbit {
 
 		try {
 			if (postAnttSuccess != null && postAnttSuccess.isSuccess()) {
-				rabbitTemplate.convertAndSend(config.getExchange(),config.getRabbitRoutingKey(), json,m-> {
+				rabbitTemplate.convertAndSend(config.getExchange(),config.getRabbitRoutingKey(), data,m-> {
 					Map<String,Object> headers = m.getMessageProperties().getHeaders();
 					m.getMessageProperties().setContentType("application/json");
 					headers.put("action","insert");
@@ -52,7 +52,7 @@ public class EnviaDadosRabbit {
 				LOGGER.info("Informacao enviada ao exchange: {}  - Cliente: {}", config.getExchange(),
 						clienteRj.getCliente().getNmNome());
 			} else {
-				rabbitTemplate.convertAndSend(config.getQueueReprocessName(), json);
+				rabbitTemplate.convertAndSend(config.getQueueReprocessName(), data);
 				LOGGER.error("Informacao enviada a Fila: {} - Cliente: {}", config.getQueueReprocessName(),
 						clienteRj.getCliente().getNmNome());
 			}
