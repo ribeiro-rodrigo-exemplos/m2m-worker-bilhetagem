@@ -43,7 +43,7 @@ spring:
     queue:
       reprocess.name: bilhetes.monitriip.DLQ
     exchange: monitriip
-    routingkey: monitriip.transmissoes
+    routingkey: monitriip.logs
 
 logging:
   file: /var/log/m2m-worker-bilhetagem.log
