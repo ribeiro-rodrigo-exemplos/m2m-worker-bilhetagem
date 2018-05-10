@@ -72,18 +72,13 @@ public class BuscaVendas {
 							List<Venda> vendas = listaVendasModel.get()
 									.getListaVendas()
 									.stream()
-									.filter(v ->
-											v.getHoraEmissao() != null && v.getHoraEmissao().equals(
-													vendasUtil.parseHour(clienteRj.getDataEnvio())
-											)
-									)
+									.filter(v -> filtrarVendas(v,clienteRj))
 									.collect(Collectors.toList());
 
 							listaVendas = new ListaVendas();
 							listaVendas.setListaVendas(vendas);
 						}
                     }
-
 
 				} catch (JAXBException e) {
 					LOGGER.error("Erro - {}", e.toString());
@@ -99,5 +94,10 @@ public class BuscaVendas {
 			LOGGER.error("Erro - {} - Cliente: {} ", erro, clienteRj.getCliente().getNmNome());
 		}
 		return new AsyncResult<>(listaVendas);
+	}
+
+	private Boolean filtrarVendas(Venda venda,ClienteRjConsultores clienteRj){
+		return venda.cancelada() || venda.getHoraEmissao() != null && venda.getHoraEmissao()
+				.equals(vendasUtil.parseHour(clienteRj.getDataEnvio()));
 	}
 }

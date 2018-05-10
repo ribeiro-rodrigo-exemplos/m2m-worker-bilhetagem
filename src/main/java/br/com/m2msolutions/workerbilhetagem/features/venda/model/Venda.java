@@ -36,7 +36,7 @@ public class Venda {
 	private String perDesconto;
 	private String plataforma;
 	private String poltrona;
-	private String status;
+	private Integer status;
 	private String tarifa;
 	private String taxaEmbarque;
 	private String tipoServico;
@@ -238,11 +238,11 @@ public class Venda {
 		this.numServico = numServico;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
@@ -316,6 +316,10 @@ public class Venda {
 
 	public void setNumBilheteEmbarque(String numBilheteEmbarque) {
 		this.numBilheteEmbarque = numBilheteEmbarque;
+	}
+
+	public Boolean cancelada(){
+		return this.status == 0;
 	}
 
 }
