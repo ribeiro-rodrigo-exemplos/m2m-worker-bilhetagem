@@ -32,9 +32,7 @@ public class ParseListaVendasToAntt {
 		}
 
 		logVendaPassagem.setNumeroSerieEquipamentoFiscal(venda.getNumSerie());
-		logVendaPassagem.setNumeroBilheteEmbarque(
-				("000000" + (venda.getNumBilheteEmbarque() != null ? venda.getNumBilheteEmbarque() : "0")).substring(
-						(venda.getNumBilheteEmbarque() != null ? venda.getNumBilheteEmbarque().length() : 0)));
+		logVendaPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
 		logVendaPassagem.setDataEmissaoBilhete(vendasUtil.parseStringDateToUTC(venda.getDataEmissao()));
 		logVendaPassagem.setHoraEmissaoBilhete(vendasUtil.parseStringHourToUTC(venda.getHoraEmissao()));
 		logVendaPassagem.setCodigoCategoriaTransporte(venda.getCategoria());
