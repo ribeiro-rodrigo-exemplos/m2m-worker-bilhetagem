@@ -128,7 +128,7 @@ public class VendasUtil {
 	public String parseStringHourToUTC(String hour) {
 		String fullHour = "";
 		try {
-			DateFormat hourFormat = new SimpleDateFormat("HHmm");
+			DateFormat hourFormat = new SimpleDateFormat("HHmmss");
 			DateFormat newHourFormat = new SimpleDateFormat("HHmmss");
 
 			Date date_ = hourFormat.parse(hour);
