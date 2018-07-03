@@ -1,6 +1,9 @@
 package br.com.m2msolutions.workerbilhetagem.core;
 
 import br.com.m2msolutions.workerbilhetagem.config.Config;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +34,12 @@ public class BuscaDadosCliente {
 	@Scheduled(fixedRateString = "${schedule.timer}")
 	public void buscarDadosClientes() {
 		try {
-			for (ClienteRjConsultores clienteRj : clienteRjConsultoresRepository.findAllByCliente_UrlZona(config.getUrlZona())) {
-				LOGGER.info("Cliente: {} - Cod Conexao: {} - Cod Empresa: {} - Ultima Consulta: {}",
-						clienteRj.getCliente().getNmNome(), clienteRj.getCodConexao(), clienteRj.getCodCliente(),
+			 List<ClienteRjConsultores> listaClientes = clienteRjConsultoresRepository.findAllByCliente_UrlZona(config.getUrlZona());
+			for (ClienteRjConsultores clienteRj : listaClientes) {
+				LOGGER.info("Nome Cliente: {} - Cod Cliente {} - Cod Conexao: {} - Cod Empresa: {} - Ultima Consulta: {}",
+						clienteRj.getCliente().getNmNome(), clienteRj.getCliente().getIdCliente(), clienteRj.getCodConexao(), clienteRj.getCodCliente(),
 						clienteRj.getDataEnvio());
+				LOGGER.info("Consorcio Cliente: {}", clienteRj.getCliente().getListaConsorcioCliente().size());
 				realizarBuscaVendas.realizarBuscaVendas(clienteRj);
 			}
 		} catch (Exception e) {

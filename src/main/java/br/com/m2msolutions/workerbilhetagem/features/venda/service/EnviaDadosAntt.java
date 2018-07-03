@@ -61,8 +61,10 @@ public class EnviaDadosAntt {
 
 			String json = parseListaVendasToAntt.parse(venda, clienteRj,null);
 			AnttMessageSuccess postAnttSuccess = postAntt(json);
+						
 			if(postAnttSuccess != null){
 				String jsonRabbit = parseListaVendasToAntt.parse(venda, clienteRj,postAnttSuccess.getIdTransacao());
+				LOGGER.info("jsonRabbit: {} ", jsonRabbit);
 				enviaDadosRabbitService.enviar(jsonRabbit, clienteRj, postAnttSuccess);
 			}
 		}

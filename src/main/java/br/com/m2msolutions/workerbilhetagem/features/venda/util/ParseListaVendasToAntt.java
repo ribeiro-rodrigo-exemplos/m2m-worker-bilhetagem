@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
+import br.com.m2msolutions.workerbilhetagem.features.cliente.ConsorcioCliente;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.InformacoesPassageiro;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogVendaPassagem;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
@@ -24,12 +25,29 @@ public class ParseListaVendasToAntt {
 
 		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
-
-		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
-			logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
+		
+		LOGGER.error(" CNPJ Invalido venda: {}", venda.getCnpj());
+		
+		if (vendasUtil.isValidCNPJ(venda.getCnpj())) {
+			if(clienteRj.getCliente().getListaConsorcioCliente().isEmpty()) {
+				logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
+			}else {
+				for(ConsorcioCliente consorcioCliente : clienteRj.getCliente().getListaConsorcioCliente()) {
+					if (venda.getCnpj().equals(consorcioCliente.getCnpjEmpresa())) {
+						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
+						break;
+					}	
+				}
+			}
 		} else {
 			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
 		}
+		
+//		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
+//			logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
+//		} else {
+//			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
+//		}
 
 		logVendaPassagem.setNumeroSerieEquipamentoFiscal(venda.getNumSerie());
 		logVendaPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
@@ -71,7 +89,21 @@ public class ParseListaVendasToAntt {
 						? venda.getCelularPassageiro() : null);
 
 		logVendaPassagem.setInformacoesPassageiro(infoPassageiro);
+/*
+		if(venda.getStatus() != 0) {
+			LogCancelamentoPassagem logCancelamentoPassagem = new LogCancelamentoPassagem();
 
+			logCancelamentoPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
+			logCancelamentoPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
+			logCancelamentoPassagem.setIdentificacaoLinha(venda.getLinha());
+			logCancelamentoPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
+			logCancelamentoPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
+			logCancelamentoPassagem.setCodigoMotivoCancelamento(venda.getStatus());
+			logCancelamentoPassagem.setDataHoraCancelamento(venda.getDataEmissao());
+			logCancelamentoPassagem.setNumeroNovoBilheteEmbarque(venda.getNumeroNovoBilheteEmbarque());
+			logVendaPassagem.setLogCancelamentoPassagem(logCancelamentoPassagem);
+		}
+*/
 		Gson gson = new Gson();
 		String listaVendasJson = gson.toJson(logVendaPassagem);
 
