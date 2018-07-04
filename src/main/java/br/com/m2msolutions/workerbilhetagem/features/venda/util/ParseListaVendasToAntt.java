@@ -26,9 +26,10 @@ public class ParseListaVendasToAntt {
 		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
 		
-		LOGGER.error(" CNPJ Invalido venda: {}", venda.getCnpj());
+		LOGGER.error(" CNPJ retorno RJ venda: {}", venda.getCnpj());
+		LOGGER.error(" Valida CNPJ  RJ venda: {}", vendasUtil.isValidCNPJ(venda.getCnpj()));
 		
-		if (vendasUtil.isValidCNPJ(venda.getCnpj())) {
+		if (vendasUtil.isValidCNPJ(venda.getCnpj().trim())) {
 			if(clienteRj.getCliente().getListaConsorcioCliente().isEmpty()) {
 				logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 			}else {
@@ -40,8 +41,12 @@ public class ParseListaVendasToAntt {
 				}
 			}
 		} else {
+			LOGGER.error(" CNPJ retorno RJ venda: {}", venda.getCnpj());
+			
 			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
 		}
+		
+		LOGGER.error("CNPJ Empresa ( logVendaPassagem.getCnpjEmpresa()  ): {}", logVendaPassagem.getCnpjEmpresa());
 		
 //		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
 //			logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
