@@ -26,8 +26,8 @@ public class ParseListaVendasToAntt {
 		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
 		
-		LOGGER.error(" CNPJ retorno RJ venda: {}", venda.getCnpj());
-		LOGGER.error(" Valida CNPJ  RJ venda: {}", vendasUtil.isValidCNPJ(venda.getCnpj()));
+//		LOGGER.error(" CNPJ retorno RJ venda: {}", venda.getCnpj());
+//		LOGGER.error(" Valida CNPJ  RJ venda: {}", vendasUtil.isValidCNPJ(venda.getCnpj()));
 		
 		if (vendasUtil.isValidCNPJ(venda.getCnpj().trim())) {
 			if(clienteRj.getCliente().getListaConsorcioCliente().isEmpty()) {
@@ -35,24 +35,20 @@ public class ParseListaVendasToAntt {
 			}else {
 				for(ConsorcioCliente consorcioCliente : clienteRj.getCliente().getListaConsorcioCliente()) {
 
-					LOGGER.error(" Codigo Cliente(): {} - Total Consorcio: {}", clienteRj.getCliente().getIdCliente(), clienteRj.getCliente().getListaConsorcioCliente().size());
-					
-					LOGGER.error(" CNPJ Consorcio Empresa  getCnpjEmpresa: {}", consorcioCliente.getCnpjEmpresa());
-					LOGGER.error(" CNPJ Consorcio  getCnpjConsorcio : {}", consorcioCliente.getCnpjConsorcio());
+//					LOGGER.error(" Codigo Cliente(): {} - Total Consorcio: {}", clienteRj.getCliente().getIdCliente(), clienteRj.getCliente().getListaConsorcioCliente().size());
+//					
+//					LOGGER.error(" CNPJ Consorcio Empresa  getCnpjEmpresa: {}", consorcioCliente.getCnpjEmpresa());
+//					LOGGER.error(" CNPJ Consorcio  getCnpjConsorcio : {}", consorcioCliente.getCnpjConsorcio());
 					
 					Long cnpjEmpresa = Long.valueOf(venda.getCnpj());
 					Long cnpjConsorcio = Long.valueOf(consorcioCliente.getCnpjEmpresa()); 
 					
 					if(cnpjEmpresa.equals(cnpjConsorcio)) {
-						LOGGER.error(" Entrou em : {}", cnpjEmpresa.equals(cnpjConsorcio));
+//						LOGGER.error(" Entrou em : {}", cnpjEmpresa.equals(cnpjConsorcio));
 						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
 						break;
 					}
 					
-					if (venda.getCnpj().trim().equals(consorcioCliente.getCnpjEmpresa())) {
-						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
-						break;
-					}	
 				}
 				if(logVendaPassagem.getCnpjEmpresa() == null) {
 					logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
@@ -63,8 +59,7 @@ public class ParseListaVendasToAntt {
 			
 			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
 		}
-		
-		LOGGER.error("CNPJ Empresa ( logVendaPassagem.getCnpjEmpresa()  ): {}", logVendaPassagem.getCnpjEmpresa());
+
 		
 //		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
 //			logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
