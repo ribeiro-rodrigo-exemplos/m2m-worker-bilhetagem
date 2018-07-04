@@ -34,7 +34,7 @@ public class ParseListaVendasToAntt {
 				logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 			}else {
 				for(ConsorcioCliente consorcioCliente : clienteRj.getCliente().getListaConsorcioCliente()) {
-					if (venda.getCnpj().equals(consorcioCliente.getCnpjEmpresa())) {
+					if (venda.getCnpj().trim().equals(consorcioCliente.getCnpjEmpresa())) {
 						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
 						break;
 					}	
