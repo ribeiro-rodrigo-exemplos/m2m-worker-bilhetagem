@@ -34,10 +34,28 @@ public class ParseListaVendasToAntt {
 				logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 			}else {
 				for(ConsorcioCliente consorcioCliente : clienteRj.getCliente().getListaConsorcioCliente()) {
+
+					LOGGER.error(" Codigo Cliente(): {} - Total Consorcio: {}", clienteRj.getCliente().getIdCliente(), clienteRj.getCliente().getListaConsorcioCliente().size());
+					
+					LOGGER.error(" CNPJ Consorcio Empresa  getCnpjEmpresa: {}", consorcioCliente.getCnpjEmpresa());
+					LOGGER.error(" CNPJ Consorcio  getCnpjConsorcio : {}", consorcioCliente.getCnpjConsorcio());
+					
+					Long cnpjEmpresa = Long.valueOf(venda.getCnpj());
+					Long cnpjConsorcio = Long.valueOf(consorcioCliente.getCnpjEmpresa()); 
+					
+					if(cnpjEmpresa.equals(cnpjConsorcio)) {
+						LOGGER.error(" Entrou em : {}", cnpjEmpresa.equals(cnpjConsorcio));
+						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
+						break;
+					}
+					
 					if (venda.getCnpj().trim().equals(consorcioCliente.getCnpjEmpresa())) {
 						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
 						break;
 					}	
+				}
+				if(logVendaPassagem.getCnpjEmpresa() == null) {
+					logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 				}
 			}
 		} else {
