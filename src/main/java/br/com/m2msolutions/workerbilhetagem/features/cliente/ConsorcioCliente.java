@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
  
@@ -15,8 +17,12 @@ public class ConsorcioCliente implements Serializable{
 	private static final long serialVersionUID = 4710886674537605632L;
 
 	@Id
-	@Column(name = "id_cliente")
-	private Integer idCliente;
+	@Column(name = "id")
+	private Integer id;
+	
+	@ManyToOne
+    @JoinColumn(name="id_cliente")
+	private Cliente cliente;
 	
 	@Column(name = "nm_consorcio")
 	private String nomeConsorcio;
@@ -30,14 +36,15 @@ public class ConsorcioCliente implements Serializable{
 	@Column(name = "cd_cnpj_consorcio")
 	private String cnpjConsorcio;
 
-	public Integer getIdCliente() {
-		return idCliente;
+	
+	public Cliente getCliente() {
+		return cliente;
 	}
-
-	public void setIdCliente(Integer idCliente) {
-		this.idCliente = idCliente;
+	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
-
+	
 	public String getNomeConsorcio() {
 		return nomeConsorcio;
 	}
@@ -68,6 +75,14 @@ public class ConsorcioCliente implements Serializable{
 
 	public void setCnpjConsorcio(String cnpjConsorcio) {
 		this.cnpjConsorcio = cnpjConsorcio;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	
