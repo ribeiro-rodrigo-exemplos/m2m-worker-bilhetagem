@@ -55,7 +55,7 @@ public class ParseListaVendasToAntt {
 				}
 				if(logVendaPassagem.getCnpjEmpresa() == null) {
 					LOGGER.info(" CNPJ logVendaPassagem.getCnpjEmpresa(): {}", logVendaPassagem.getCnpjEmpresa());
-					LOGGER.info(" Cliente: {} - Lista Vazia ", clienteRj.getCliente().getIdCliente());
+					LOGGER.info(" Codigo Cliente: {} ", clienteRj.getCliente().getIdCliente());
 					LOGGER.info(" CNPJ retorno RJ: {}", venda.getCnpj());
 					logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 				}
