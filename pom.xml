@@ -88,7 +88,7 @@
 		</plugins>
 		<resources>
             <resource>
-                <directory>${basedir}/src/main/java</directory>
+                <directory>${project_loc:m2m-worker-bilhetagem}/src/main/java</directory>
             </resource>
         </resources>
 	</build>
