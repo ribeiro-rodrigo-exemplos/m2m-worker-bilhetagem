@@ -20,7 +20,7 @@ public class ParseListaVendasToAntt {
 	@Autowired
 	private VendasUtil vendasUtil;
 
-	public String parse(Venda venda, ClienteRjConsultores clienteRj,String transacaoId) {
+	public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,String transacaoId) {
 		LogVendaPassagem logVendaPassagem = new LogVendaPassagem();
 
 		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
@@ -31,6 +31,8 @@ public class ParseListaVendasToAntt {
 		
 		if (vendasUtil.isValidCNPJ(venda.getCnpj().trim())) {
 			if(clienteRj.getCliente().getListaConsorcioCliente().isEmpty()) {
+				LOGGER.info(" Cliente: {} - Lista Vazia ", clienteRj.getCliente().getIdCliente());
+				LOGGER.info(" CNPJ retorno RJ: {} - Lista Vazia ", venda.getCnpj());
 				logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 			}else {
 				for(ConsorcioCliente consorcioCliente : clienteRj.getCliente().getListaConsorcioCliente()) {
@@ -43,6 +45,7 @@ public class ParseListaVendasToAntt {
 					Long cnpjEmpresa = Long.valueOf(venda.getCnpj());
 					Long cnpjConsorcio = Long.valueOf(consorcioCliente.getCnpjEmpresa()); 
 					
+					
 					if(cnpjEmpresa.equals(cnpjConsorcio)) {
 //						LOGGER.error(" Entrou em : {}", cnpjEmpresa.equals(cnpjConsorcio));
 						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
@@ -51,6 +54,9 @@ public class ParseListaVendasToAntt {
 					
 				}
 				if(logVendaPassagem.getCnpjEmpresa() == null) {
+					LOGGER.info(" CNPJ logVendaPassagem.getCnpjEmpresa(): {}", logVendaPassagem.getCnpjEmpresa());
+					LOGGER.info(" Cliente: {} - Lista Vazia ", clienteRj.getCliente().getIdCliente());
+					LOGGER.info(" CNPJ retorno RJ: {}", venda.getCnpj());
 					logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
 				}
 			}
@@ -107,6 +113,7 @@ public class ParseListaVendasToAntt {
 						? venda.getCelularPassageiro() : null);
 
 		logVendaPassagem.setInformacoesPassageiro(infoPassageiro);
+		
 /*
 		if(venda.getStatus() != 0) {
 			LogCancelamentoPassagem logCancelamentoPassagem = new LogCancelamentoPassagem();
