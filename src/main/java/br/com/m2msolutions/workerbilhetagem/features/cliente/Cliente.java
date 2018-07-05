@@ -103,10 +103,6 @@ public class Cliente implements Serializable {
 	private List<ConsorcioCliente> listaConsorcioCliente = new ArrayList<ConsorcioCliente>()  ;
 
 	public List<ConsorcioCliente> getListaConsorcioCliente() {
-		
-//		if(this.idCliente == 189) {
-//			return ConsorcioEnum.Util.listaConsorcioCliente();
-//		}
 		return listaConsorcioCliente;
 	}
 
