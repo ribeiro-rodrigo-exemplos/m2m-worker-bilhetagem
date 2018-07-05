@@ -1,6 +1,7 @@
 package br.com.m2msolutions.workerbilhetagem.features.cliente;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -99,9 +100,16 @@ public class Cliente implements Serializable {
 
 	@OneToMany(cascade=CascadeType.ALL, targetEntity=ConsorcioCliente.class, fetch = FetchType.EAGER)
 	@JoinColumn(name="id_cliente")
-	private List<ConsorcioCliente> listaConsorcioCliente;
+	private List<ConsorcioCliente> listaConsorcioCliente = new ArrayList<ConsorcioCliente>()  ;
 
 	public List<ConsorcioCliente> getListaConsorcioCliente() {
+		
+		
+		if(this.idCliente == 189) {
+			return ConsorcioEnum.Util.listaConsorcioCliente();
+		}
+		
+		
 		return listaConsorcioCliente;
 	}
 
