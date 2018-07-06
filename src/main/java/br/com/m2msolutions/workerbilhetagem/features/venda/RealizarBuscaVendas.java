@@ -36,7 +36,7 @@ public class RealizarBuscaVendas {
 			Future<ListaVendas> listaVendas = buscaVendasService.buscarVendas(url, clienteRj);
 			if (listaVendas.get() != null) {
 				if (listaVendas.isDone())
-					enviaDadosAntt.enviar(listaVendas.get(), clienteRj);
+					enviaDadosAntt.enviar(listaVendas.get(), clienteRj,url);
 			}
 		} else {
 			LOGGER.error("{} - URL Incorreta para consulta", url);

@@ -96,6 +96,6 @@ public class BuscaVendas {
 	}
 
 	private Boolean filtrarVendas(Venda venda,ClienteRjConsultores clienteRj){
-		return venda.getHoraEmissao() != null;
+		return venda.getHoraEmissao() != null && vendasUtil.skipSeconds(venda.getHoraEmissao()).equals(vendasUtil.parseHour(clienteRj.getDataEnvio()));
 	}
 }

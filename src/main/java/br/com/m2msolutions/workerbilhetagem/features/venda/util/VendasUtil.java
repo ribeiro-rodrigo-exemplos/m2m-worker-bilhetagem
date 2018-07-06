@@ -142,6 +142,23 @@ public class VendasUtil {
 		return fullHour;
 	}
 
+	public String skipSeconds(String hour) {
+		String fullHour = "";
+		try {
+			DateFormat hourFormat = new SimpleDateFormat("HHmmss");
+			DateFormat newHourFormat = new SimpleDateFormat("HHmm");
+
+			Date date_ = hourFormat.parse(hour);
+
+			fullHour = newHourFormat.format(date_);
+
+		} catch (Exception e) {
+			LOGGER.error("Error - " + e.toString());
+			LOGGER.error(hour);
+		}
+		return fullHour;
+	}
+
 	private int calcularDigito(String str, int[] peso) {
 		int soma = 0;
 		for (int indice = str.length() - 1, digito; indice >= 0; indice--) {

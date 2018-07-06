@@ -49,7 +49,7 @@ public class EnviaDadosAntt {
 	@Autowired
 	private Config config;
 
-	public void enviar(ListaVendas listaVendas, ClienteRjConsultores clienteRj) {
+	public void enviar(ListaVendas listaVendas, ClienteRjConsultores clienteRj, String url) {
 
 		if(listaVendas.isForaDoPeriodo()){
 			clienteRj.setNow();
@@ -60,7 +60,7 @@ public class EnviaDadosAntt {
 		for (Venda venda : listaVendas.getListaVendas()) {
 
 			String json = parseListaVendasToAntt.parse(venda, clienteRj,null);
-			AnttMessageSuccess postAnttSuccess = postAntt(json);
+			AnttMessageSuccess postAnttSuccess = postAntt(json,url);
 						
 			if(postAnttSuccess != null){
 				String jsonRabbit = parseListaVendasToAntt.parse(venda, clienteRj,postAnttSuccess.getIdTransacao());
@@ -74,7 +74,7 @@ public class EnviaDadosAntt {
 		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), clienteRj.getDataEnvio());
 	}
 
-	private AnttMessageSuccess postAntt(String json) {
+	private AnttMessageSuccess postAntt(String json, String url) {
 		Gson gson = new Gson();
 		AnttMessageSuccess anttSuccess = null;
 
@@ -99,7 +99,7 @@ public class EnviaDadosAntt {
 
 		} catch (HttpClientErrorException ex) {
 			AnttError error = gson.fromJson(ex.getResponseBodyAsString(), AnttError.class);
-
+			LOGGER.error("URL - {}",url);
 			LOGGER.error("Erro ao Enviar Dados ANTT - Total Erros: {} - Codigo: {} - Mensagem: {}",
 					error.getErros().size(), error.getCodigo(), error.getMensagem());
 
