@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ClienteRjConsultores;
 import br.com.m2msolutions.workerbilhetagem.features.cliente.ConsorcioCliente;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.InformacoesPassageiro;
+import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogCancelamentoPassagem;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.LogVendaPassagem;
 import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 
@@ -114,7 +115,7 @@ public class ParseListaVendasToAntt {
 
 		logVendaPassagem.setInformacoesPassageiro(infoPassageiro);
 		
-/*
+
 		if(venda.getStatus() != 0) {
 			LogCancelamentoPassagem logCancelamentoPassagem = new LogCancelamentoPassagem();
 
@@ -128,7 +129,7 @@ public class ParseListaVendasToAntt {
 			logCancelamentoPassagem.setNumeroNovoBilheteEmbarque(venda.getNumeroNovoBilheteEmbarque());
 			logVendaPassagem.setLogCancelamentoPassagem(logCancelamentoPassagem);
 		}
-*/
+
 		Gson gson = new Gson();
 		String listaVendasJson = gson.toJson(logVendaPassagem);
 
