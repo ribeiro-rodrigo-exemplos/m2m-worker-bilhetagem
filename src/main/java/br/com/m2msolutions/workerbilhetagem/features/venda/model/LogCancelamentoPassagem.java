@@ -12,6 +12,7 @@ public class LogCancelamentoPassagem {
     private Integer codigoMotivoCancelamento;
     private String dataHoraCancelamento;
     private String numeroNovoBilheteEmbarque;
+    private String transacaoId;
 
     public Integer getIdLog() {
         return idLog;
@@ -76,4 +77,12 @@ public class LogCancelamentoPassagem {
     public void setNumeroNovoBilheteEmbarque(String numeroNovoBilheteEmbarque) {
         this.numeroNovoBilheteEmbarque = numeroNovoBilheteEmbarque;
     }
+
+	public String getTransacaoId() {
+		return transacaoId;
+	}
+
+	public void setTransacaoId(String transacaoId) {
+		this.transacaoId = transacaoId;
+	}
 }

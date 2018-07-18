@@ -19,7 +19,9 @@ authentication:
     password: rjm2mrj
   antt:
     token:  9890bf68-671a-4748-a34f-08391fdfc09c
-    url: http://appservices.antt.gov.br:8000/antt/monitriip.validacao/rest/InserirLogVendaPassagem
+    url: http://appservices.antt.gov.br:8000/antt/monitriip.validacao/rest/
+    venda: InserirLogVendaPassagem
+    cancelamento: InserirLogCancelarPassagem
 
 spring:
   datasource:
@@ -55,3 +57,4 @@ url-zona: http://zn4.m2mcontrol.com.br/#/
 lazypersistence:
   database: monitriip_znh
 
+cod-cancelamento: 11

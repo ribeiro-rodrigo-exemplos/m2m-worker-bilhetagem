@@ -17,6 +17,12 @@ public class Config {
 
 	@Value("${authentication.antt.url}")
 	private String anttUrl;
+	
+	@Value("${authentication.antt.venda}")
+	private String inserirVenda;
+
+	@Value("${authentication.antt.cancelamento}")
+	private String inserirCancelamento;
 
 	@Value("${authentication.antt.token}")
 	private String anttToken;
@@ -53,6 +59,9 @@ public class Config {
 
 	@Value("${url-zona}")
     private String urlZona;
+
+	@Value("${cod-cancelamento}")
+    private String codCancelamento;
 
 	public String getLazyPersistenceDatabase() {
 		return lazyPersistenceDatabase;
@@ -180,5 +189,29 @@ public class Config {
 
 	public void setSaveDataToFile(boolean saveDataToFile) {
 		this.saveDataToFile = saveDataToFile;
+	}
+
+	public String getInserirVenda() {
+		return inserirVenda;
+	}
+
+	public void setInserirVenda(String inserirVenda) {
+		this.inserirVenda = inserirVenda;
+	}
+
+	public String getInserirCancelamento() {
+		return inserirCancelamento;
+	}
+
+	public void setInserirCancelamento(String inserirCancelamento) {
+		this.inserirCancelamento = inserirCancelamento;
+	}
+
+	public String getCodCancelamento() {
+		return codCancelamento;
+	}
+
+	public void setCodCancelamento(String codCancelamento) {
+		this.codCancelamento = codCancelamento;
 	}
 }

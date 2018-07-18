@@ -58,15 +58,36 @@ public class EnviaDadosAntt {
 			clienteRj.nextMinute();
 
 		for (Venda venda : listaVendas.getListaVendas()) {
-
-			String json = parseListaVendasToAntt.parse(venda, clienteRj,null);
-			AnttMessageSuccess postAnttSuccess = postAntt(json,url);
-						
-			if(postAnttSuccess != null){
-				String jsonRabbit = parseListaVendasToAntt.parse(venda, clienteRj,postAnttSuccess.getIdTransacao());
-//				LOGGER.info("jsonRabbit: {} ", jsonRabbit);
-				enviaDadosRabbitService.enviar(jsonRabbit, clienteRj, postAnttSuccess);
-			}
+			String urlAntt = config.getAnttUrl();
+			
+			if(venda.getStatus() != 0) {
+				
+			
+				urlAntt += config.getInserirCancelamento();				
+				
+				String json = parseListaVendasToAntt.parseCancelamento(venda, config.getCodCancelamento(), null);
+				AnttMessageSuccess postAnttSuccess = postAntt(json,url, urlAntt);
+							
+				if(postAnttSuccess != null){
+					String jsonRabbit = parseListaVendasToAntt.parseCancelamento(venda, config.getCodCancelamento(), postAnttSuccess.getIdTransacao());
+	//				LOGGER.info("jsonRabbit: {} ", jsonRabbit);
+					enviaDadosRabbitService.enviar(jsonRabbit, clienteRj, postAnttSuccess);
+				}
+			}else {
+				
+				urlAntt += config.getInserirVenda();
+			
+				// config.setAnttUrl(urlAntt);
+				
+				String json = parseListaVendasToAntt.parse(venda, clienteRj,null);
+				AnttMessageSuccess postAnttSuccess = postAntt(json,url,urlAntt);
+							
+				if(postAnttSuccess != null){
+					String jsonRabbit = parseListaVendasToAntt.parse(venda, clienteRj,postAnttSuccess.getIdTransacao());
+	//				LOGGER.info("jsonRabbit: {} ", jsonRabbit);
+					enviaDadosRabbitService.enviar(jsonRabbit, clienteRj, postAnttSuccess);
+				}
+		  }
 		}
 
 		clienteRjConsultoresRepository.save(clienteRj);
@@ -74,7 +95,7 @@ public class EnviaDadosAntt {
 		LOGGER.info("Cliente: {} - Ultima Venda: {}", clienteRj.getCliente().getNmNome(), clienteRj.getDataEnvio());
 	}
 
-	private AnttMessageSuccess postAntt(String json, String url) {
+	private AnttMessageSuccess postAntt(String json, String url, String urlAntt) {
 		Gson gson = new Gson();
 		AnttMessageSuccess anttSuccess = null;
 
@@ -90,11 +111,12 @@ public class EnviaDadosAntt {
 		restTemplate.setInterceptors(interceptors);
 
 		try {
-			HttpEntity<String> response = restTemplate.exchange(config.getAnttUrl(), HttpMethod.POST, entity,
+			HttpEntity<String> response = restTemplate.exchange(urlAntt, HttpMethod.POST, entity,
 					String.class);
 
 			anttSuccess = gson.fromJson(response.getBody(), AnttMessageSuccess.class);
 			LOGGER.info("Mensagem: {} - idTransacao: {}", anttSuccess.getMensagem(), anttSuccess.getIdTransacao());
+			LOGGER.info("Serviço Antt: {} ", urlAntt);
 			anttSuccess.setSuccess(true);
 
 		} catch (HttpClientErrorException ex) {

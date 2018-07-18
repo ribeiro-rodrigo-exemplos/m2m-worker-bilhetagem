@@ -43,7 +43,6 @@ public class LogVendaPassagem {
 
 	private String origemEmissao;
 	
-	private LogCancelamentoPassagem logCancelamentoPassagem;
 
 	public String getTransacaoId() {
 		return transacaoId;
@@ -300,14 +299,6 @@ public class LogVendaPassagem {
 
 	public void setInformacoesPassageiro(InformacoesPassageiro informacoesPassageiro) {
 		this.informacoesPassageiro = informacoesPassageiro;
-	}
-
-	public LogCancelamentoPassagem getLogCancelamentoPassagem() {
-		return logCancelamentoPassagem;
-	}
-
-	public void setLogCancelamentoPassagem(LogCancelamentoPassagem logCancelamentoPassagem) {
-		this.logCancelamentoPassagem = logCancelamentoPassagem;
 	}
 
 }

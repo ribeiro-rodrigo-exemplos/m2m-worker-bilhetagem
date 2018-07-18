@@ -21,7 +21,31 @@ public class ParseListaVendasToAntt {
 	@Autowired
 	private VendasUtil vendasUtil;
 
-	public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,String transacaoId) {
+public synchronized String parseCancelamento(Venda venda, String cancelamentoId, String transacaoId) {
+		
+		Gson gson = new Gson();
+		
+
+			LogCancelamentoPassagem logCancelamentoPassagem = new LogCancelamentoPassagem();
+			
+			logCancelamentoPassagem.setIdLog(Integer.parseInt(cancelamentoId));
+			logCancelamentoPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
+			logCancelamentoPassagem.setIdentificacaoLinha(venda.getLinha());
+			logCancelamentoPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
+			logCancelamentoPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
+			logCancelamentoPassagem.setCodigoMotivoCancelamento(venda.getStatus());
+			logCancelamentoPassagem.setDataHoraCancelamento(vendasUtil.parseStringToSqlDate(venda.getDataEmissao(), venda.getHoraEmissao()).replaceAll(" ", "T"));
+			logCancelamentoPassagem.setNumeroNovoBilheteEmbarque(venda.getNumeroNovoBilheteEmbarque());
+			if(transacaoId != null)
+				logCancelamentoPassagem.setTransacaoId(transacaoId);
+
+			// logVendaPassagem.setLogCancelamentoPassagem(logCancelamentoPassagem);
+			return gson.toJson(logCancelamentoPassagem).toString();
+	}
+
+public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,String transacaoId) {
+		
+		
 		LogVendaPassagem logVendaPassagem = new LogVendaPassagem();
 
 		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
@@ -115,21 +139,6 @@ public class ParseListaVendasToAntt {
 
 		logVendaPassagem.setInformacoesPassageiro(infoPassageiro);
 		
-
-		if(venda.getStatus() != 0) {
-			LogCancelamentoPassagem logCancelamentoPassagem = new LogCancelamentoPassagem();
-
-			logCancelamentoPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
-			logCancelamentoPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
-			logCancelamentoPassagem.setIdentificacaoLinha(venda.getLinha());
-			logCancelamentoPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
-			logCancelamentoPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
-			logCancelamentoPassagem.setCodigoMotivoCancelamento(venda.getStatus());
-			logCancelamentoPassagem.setDataHoraCancelamento(venda.getDataEmissao());
-			logCancelamentoPassagem.setNumeroNovoBilheteEmbarque(venda.getNumeroNovoBilheteEmbarque());
-			logVendaPassagem.setLogCancelamentoPassagem(logCancelamentoPassagem);
-		}
-
 		Gson gson = new Gson();
 		String listaVendasJson = gson.toJson(logVendaPassagem);
 
