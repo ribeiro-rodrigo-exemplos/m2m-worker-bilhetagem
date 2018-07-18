@@ -48,6 +48,12 @@ public class VendasUtil {
 		return url.toString();
 	}
 
+	public String onlyNumbersFormat(String str) {
+		
+		return str.replaceAll("\\D", "");
+	}
+
+	
 	private String parseDate(String dataCompleta) {
 		String data = "";
 		try {

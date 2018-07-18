@@ -30,7 +30,7 @@ public synchronized String parseCancelamento(Venda venda, String cancelamentoId,
 			
 			logCancelamentoPassagem.setIdLog(Integer.parseInt(cancelamentoId));
 			logCancelamentoPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
-			logCancelamentoPassagem.setIdentificacaoLinha(venda.getLinha());
+			logCancelamentoPassagem.setIdentificacaoLinha(vendasUtil.onlyNumbersFormat(venda.getLinha()));
 			logCancelamentoPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
 			logCancelamentoPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
 			logCancelamentoPassagem.setCodigoMotivoCancelamento(venda.getStatus());
@@ -103,7 +103,7 @@ public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,Str
 		logVendaPassagem.setDataEmissaoBilhete(vendasUtil.parseStringDateToUTC(venda.getDataEmissao()));
 		logVendaPassagem.setHoraEmissaoBilhete(vendasUtil.parseStringHourToUTC(venda.getHoraEmissao()));
 		logVendaPassagem.setCodigoCategoriaTransporte(venda.getCategoria());
-		logVendaPassagem.setIdentificacaoLinha(venda.getLinha());
+		logVendaPassagem.setIdentificacaoLinha(vendasUtil.onlyNumbersFormat(venda.getLinha()));
 		logVendaPassagem.setIdPontoOrigemViagem("".equals(venda.getOrigem()) ? "0" : venda.getOrigem());
 		logVendaPassagem.setIdPontoDestinoViagem("".equals(venda.getDestino()) ? "0" : venda.getDestino());
 		logVendaPassagem.setCodigoTipoServico(venda.getTipoServico());
