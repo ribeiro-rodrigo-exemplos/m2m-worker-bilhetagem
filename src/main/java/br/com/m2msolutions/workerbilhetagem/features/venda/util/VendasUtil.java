@@ -91,9 +91,9 @@ public class VendasUtil {
 
 	public String parseStringToSqlDate(String date, String hour) {
 		String dateTime = "";
-		hour = ("0000" + hour).substring(hour.length());
+		// hour = ("0000" + hour).substring(hour.length());
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HHmm");
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HHmmss");
 			DateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			Date date_ = dateFormat.parse(date + " " + hour);
@@ -107,6 +107,11 @@ public class VendasUtil {
 		return dateTime;
 	}
 
+	public static void main(String[] args) {
+		VendasUtil v = new VendasUtil();
+		v.parseStringToSqlDate("20180705", "134500");
+	}
+	
 	public String getDataHoraUltimaVenda(ListaVendas listaVendas) {
 		int ultimaVenda = listaVendas.getListaVendas().size() - 1;
 		String dataUltimaVenda = listaVendas.getListaVendas().get(ultimaVenda).getDataEmissao();
