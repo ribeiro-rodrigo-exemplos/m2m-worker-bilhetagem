@@ -32,7 +32,7 @@ public class EnviaDadosRabbit {
 	@Autowired
 	ParseStringJsonToRabbitModel parseStringJsonToRabbitModel;
 
-	public void enviar(String json, ClienteRjConsultores clienteRj, AnttMessageSuccess postAnttSuccess) {
+	public void enviar(String json, ClienteRjConsultores clienteRj, AnttMessageSuccess postAnttSuccess, int status) {
 		String data = parseStringJsonToRabbitModel.parse(json, clienteRj);
 
 		if (config.isSaveDataToFile())
@@ -44,7 +44,11 @@ public class EnviaDadosRabbit {
 					Map<String,Object> headers = m.getMessageProperties().getHeaders();
 					m.getMessageProperties().setContentType("application/json");
 					headers.put("action","insert");
-					headers.put("collection","Bilhetes");
+					if(status != 0) {
+						headers.put("collection","logsMonitrip");
+					}else {
+						headers.put("collection","Bilhetes");
+					}
 					headers.put("database",config.getLazyPersistenceDatabase());
 					return m;
 				});
