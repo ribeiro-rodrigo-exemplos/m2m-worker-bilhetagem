@@ -69,7 +69,8 @@ public class EnviaDadosAntt {
 				AnttMessageSuccess postAnttSuccess = postAntt(json,url, urlAntt);
 							
 				if(postAnttSuccess != null){
-					String jsonRabbit = parseListaVendasToAntt.parseCancelamento(venda, config.getCodCancelamento(), postAnttSuccess.getIdTransacao());
+					venda.setIdLog(config.getCodCancelamento());
+					String jsonRabbit = parseListaVendasToAntt.parse(venda, clienteRj, postAnttSuccess.getIdTransacao());
 	//				LOGGER.info("jsonRabbit: {} ", jsonRabbit);
 					enviaDadosRabbitService.enviar(jsonRabbit, clienteRj, postAnttSuccess, venda.getStatus());
 				}
