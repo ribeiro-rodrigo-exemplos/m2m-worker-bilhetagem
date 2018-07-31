@@ -9,6 +9,30 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LogVendaPassagem {
 
+	public Integer getCodigoMotivoCancelamento() {
+		return codigoMotivoCancelamento;
+	}
+
+	public void setCodigoMotivoCancelamento(Integer codigoMotivoCancelamento) {
+		this.codigoMotivoCancelamento = codigoMotivoCancelamento;
+	}
+
+	public String getDataHoraCancelamento() {
+		return dataHoraCancelamento;
+	}
+
+	public void setDataHoraCancelamento(String dataHoraCancelamento) {
+		this.dataHoraCancelamento = dataHoraCancelamento;
+	}
+
+	public String getNumeroNovoBilheteEmbarque() {
+		return numeroNovoBilheteEmbarque;
+	}
+
+	public void setNumeroNovoBilheteEmbarque(String numeroNovoBilheteEmbarque) {
+		this.numeroNovoBilheteEmbarque = numeroNovoBilheteEmbarque;
+	}
+
 	private Integer idLog;
 	private String codigoBilheteEmbarque;
 	private String cnpjEmpresa;
@@ -43,6 +67,10 @@ public class LogVendaPassagem {
 
 	private String origemEmissao;
 	
+    private Integer codigoMotivoCancelamento;
+    private String dataHoraCancelamento;
+    private String numeroNovoBilheteEmbarque;
+
 
 	public String getTransacaoId() {
 		return transacaoId;
@@ -300,5 +328,4 @@ public class LogVendaPassagem {
 	public void setInformacoesPassageiro(InformacoesPassageiro informacoesPassageiro) {
 		this.informacoesPassageiro = informacoesPassageiro;
 	}
-
 }

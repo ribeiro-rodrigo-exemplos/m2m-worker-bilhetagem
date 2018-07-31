@@ -51,6 +51,13 @@ public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,Str
 		logVendaPassagem.setIdLog(Integer.parseInt(venda.getIdLog()));
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
 		
+		//TODO Retir após levantamento dos dados de cancelamento para otimização
+		if("11".equals(venda.getIdLog())) {
+			logVendaPassagem.setCodigoMotivoCancelamento(venda.getStatus());
+			logVendaPassagem.setDataHoraCancelamento(vendasUtil.parseStringToSqlDate(venda.getDataEmissao(), venda.getHoraEmissao()).replaceAll(" ", "T"));
+			logVendaPassagem.setNumeroNovoBilheteEmbarque(venda.getNumeroNovoBilheteEmbarque());
+		}
+		
 //		LOGGER.error(" CNPJ retorno RJ venda: {}", venda.getCnpj());
 //		LOGGER.error(" Valida CNPJ  RJ venda: {}", vendasUtil.isValidCNPJ(venda.getCnpj()));
 		
