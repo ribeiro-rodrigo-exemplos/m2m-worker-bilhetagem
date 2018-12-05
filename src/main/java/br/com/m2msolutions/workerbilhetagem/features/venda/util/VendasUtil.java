@@ -2,6 +2,7 @@ package br.com.m2msolutions.workerbilhetagem.features.venda.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -220,5 +221,29 @@ public class VendasUtil {
 		} catch (IOException e) {
 			LOGGER.error("Erro ao salvar string no arquivo: {} ", filename);
 		}
+	}
+
+	/**
+	 * Completa com zeros à esquerda
+	 *
+	 * @param totalCaracteres
+	 * @param valor
+	 * @return
+	 */
+	public String completaComZerosEsquerda(int totalCaracteres, String valor) {
+		StringBuilder sb = new StringBuilder();
+		try {
+
+			int tamnhoAtual = valor.length();
+			while((totalCaracteres - tamnhoAtual) > 0){
+				sb.append(BigInteger.ZERO);
+				++tamnhoAtual;
+			}
+			sb.append(valor);
+
+		} catch (Exception e) {
+			LOGGER.error("Erro ao completar zeros a esquerda : {} ", valor);
+		}
+		return sb.toString();
 	}
 }

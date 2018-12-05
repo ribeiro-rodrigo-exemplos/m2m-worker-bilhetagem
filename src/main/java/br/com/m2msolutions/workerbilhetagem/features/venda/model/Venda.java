@@ -44,6 +44,7 @@ public class Venda {
 	private String valorPedagio;
 	private String valorTotal;
 	private String numBilheteEmbarque;
+	private String numBilheteEstado;
 	private String codRetorno;
 
 	public String getIdLog() {
@@ -318,8 +319,17 @@ public class Venda {
 		this.numBilheteEmbarque = numBilheteEmbarque;
 	}
 
+	public String getNumBilheteEstado() {
+		return numBilheteEstado;
+	}
+
+	public void setNumBilheteEstado(String numBilheteEstado) {
+		this.numBilheteEstado = numBilheteEstado;
+	}
+
 	public Boolean cancelada(){
 		return this.status == 0;
 	}
+
 
 }
