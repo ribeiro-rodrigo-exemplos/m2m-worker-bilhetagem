@@ -4,21 +4,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.persistence.*;
 
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name = "cliente_rjconsultores")
+@Table(name = "rjconsultores")
 public class ClienteRjConsultores {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@ManyToOne
-    @JoinColumn(name="id_cliente")
+	@JoinColumn(name="id_cliente")
 	private Cliente cliente;
 
 	@NotNull
@@ -86,19 +87,27 @@ public class ClienteRjConsultores {
 	}
 
 	public void nextMinute(){
-	    try{
-            if(dataEnvio != null){
-                Date data = new SimpleDateFormat(datePattern).parse(dataEnvio);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(data);
-                calendar.add(Calendar.MINUTE,1);
-                dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
-            }
-        }
-        catch (ParseException e){
-	        throw new RuntimeException(e);
-        }
-    }
+		try{
+			if(dataEnvio != null){
+				Date data = new SimpleDateFormat(datePattern).parse(dataEnvio);
+
+				TimeZone tz = TimeZone.getTimeZone(cliente.getDsTimezone());
+				TimeZone.setDefault(tz);
+				Calendar calendar = Calendar.getInstance(tz);
+				int horatz = calendar.get(Calendar.HOUR_OF_DAY);
+				calendar.setTime(data);
+				int hora = calendar.get(Calendar.HOUR_OF_DAY);
+				if (hora != horatz){
+					calendar.set(Calendar.HOUR_OF_DAY, horatz);
+				}
+				calendar.add(Calendar.MINUTE,1);
+				dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
+			}
+		}
+		catch (ParseException e){
+			throw new RuntimeException(e);
+		}
+	}
 
 	public void setDataEnvio(String dataEnvio) {
 		this.dataEnvio = dataEnvio;
