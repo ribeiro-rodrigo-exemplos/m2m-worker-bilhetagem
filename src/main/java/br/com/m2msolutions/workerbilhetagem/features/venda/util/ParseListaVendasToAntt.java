@@ -18,6 +18,9 @@ import br.com.m2msolutions.workerbilhetagem.features.venda.model.Venda;
 public class ParseListaVendasToAntt {
 	private Logger LOGGER = LoggerFactory.getLogger(ParseListaVendasToAntt.class);
 
+	private static final  String NUM_SERIE_FIXO = "000013";
+	private static  final String ID_LOG_CANCELAMENTO = "11";
+
 	@Autowired
 	private VendasUtil vendasUtil;
 
@@ -27,10 +30,16 @@ public synchronized String parseCancelamento(Venda venda, String cancelamentoId,
 		
 
 			LogCancelamentoPassagem logCancelamentoPassagem = new LogCancelamentoPassagem();
-			
-			logCancelamentoPassagem.setIdLog(Integer.parseInt(cancelamentoId));
-			logCancelamentoPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
-			logCancelamentoPassagem.setIdentificacaoLinha(vendasUtil.onlyNumbersFormat(venda.getLinha()));
+
+            logCancelamentoPassagem.setIdLog(Integer.parseInt(cancelamentoId));
+
+            if((null == venda.getNumBilheteEmbarque() || "".equals(venda.getNumBilheteEmbarque()))) {
+                logCancelamentoPassagem.setNumeroBilheteEmbarque(vendasUtil.completaComZerosEsquerda(9, venda.getNumBilheteEstado()));
+            }else {
+                logCancelamentoPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
+            }
+
+            logCancelamentoPassagem.setIdentificacaoLinha(vendasUtil.onlyNumbersFormat(venda.getLinha()));
 			logCancelamentoPassagem.setDataViagem(vendasUtil.parseStringDateToUTC(venda.getDataViagem()));
 			logCancelamentoPassagem.setHoraViagem(vendasUtil.parseStringHourToUTC(venda.getHoraViagem()));
 			logCancelamentoPassagem.setCodigoMotivoCancelamento(venda.getStatus());
@@ -39,7 +48,7 @@ public synchronized String parseCancelamento(Venda venda, String cancelamentoId,
 			if(transacaoId != null)
 				logCancelamentoPassagem.setTransacaoId(transacaoId);
 
-			// logVendaPassagem.setLogCancelamentoPassagem(logCancelamentoPassagem);
+
 			return gson.toJson(logCancelamentoPassagem).toString();
 	}
 
@@ -52,39 +61,35 @@ public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,Str
 		logVendaPassagem.setCodigoBilheteEmbarque(venda.getIdentificadorBilhete());
 		
 		//TODO Retir após levantamento dos dados de cancelamento para otimização
-		if("11".equals(venda.getIdLog())) {
+		if(ID_LOG_CANCELAMENTO.equals(venda.getIdLog())) {
 			logVendaPassagem.setCodigoMotivoCancelamento(venda.getStatus());
 			logVendaPassagem.setDataHoraCancelamento(vendasUtil.parseStringToSqlDate(venda.getDataEmissao(), venda.getHoraEmissao()).replaceAll(" ", "T"));
 			logVendaPassagem.setNumeroNovoBilheteEmbarque(venda.getNumeroNovoBilheteEmbarque());
 		}
-		
-//		LOGGER.error(" CNPJ retorno RJ venda: {}", venda.getCnpj());
-//		LOGGER.error(" Valida CNPJ  RJ venda: {}", vendasUtil.isValidCNPJ(venda.getCnpj()));
+
 		
 		if (vendasUtil.isValidCNPJ(venda.getCnpj().trim())) {
+
 			if(clienteRj.getCliente().getListaConsorcioCliente().isEmpty()) {
 				LOGGER.info(" Cliente: {} - Lista Vazia ", clienteRj.getCliente().getIdCliente());
 				LOGGER.info(" CNPJ retorno RJ: {} - Lista Vazia ", venda.getCnpj());
 				logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
+
 			}else {
 				for(ConsorcioCliente consorcioCliente : clienteRj.getCliente().getListaConsorcioCliente()) {
-
-//					LOGGER.error(" Codigo Cliente(): {} - Total Consorcio: {}", clienteRj.getCliente().getIdCliente(), clienteRj.getCliente().getListaConsorcioCliente().size());
-//					
-//					LOGGER.error(" CNPJ Consorcio Empresa  getCnpjEmpresa: {}", consorcioCliente.getCnpjEmpresa());
-//					LOGGER.error(" CNPJ Consorcio  getCnpjConsorcio : {}", consorcioCliente.getCnpjConsorcio());
 					
 					Long cnpjEmpresa = Long.valueOf(venda.getCnpj());
 					Long cnpjConsorcio = Long.valueOf(consorcioCliente.getCnpjEmpresa()); 
 					
 					
 					if(cnpjEmpresa.equals(cnpjConsorcio)) {
-//						LOGGER.error(" Entrou em : {}", cnpjEmpresa.equals(cnpjConsorcio));
+
 						logVendaPassagem.setCnpjEmpresa(consorcioCliente.getCnpjConsorcio());
 						break;
 					}
 					
 				}
+
 				if(logVendaPassagem.getCnpjEmpresa() == null) {
 					LOGGER.info(" CNPJ logVendaPassagem.getCnpjEmpresa(): {}", logVendaPassagem.getCnpjEmpresa());
 					LOGGER.info(" Codigo Cliente: {} ", clienteRj.getCliente().getIdCliente());
@@ -98,15 +103,20 @@ public synchronized String parse(Venda venda, ClienteRjConsultores clienteRj,Str
 			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
 		}
 
-		
-//		if (vendasUtil.isValidCNPJ(clienteRj.getCliente().getCdCnpj())) {
-//			logVendaPassagem.setCnpjEmpresa(clienteRj.getCliente().getCdCnpj());
-//		} else {
-//			LOGGER.error("CNPJ Invalido: {}", clienteRj.getCliente().getCdCnpj());
-//		}
+        if ((null == venda.getNumSerie() || "0".equals(venda.getNumSerie())) && (null == venda.getNumBilheteEmbarque() || "".equals(venda.getNumBilheteEmbarque())) && null != venda.getNumBilheteImpresso()){
 
-		logVendaPassagem.setNumeroSerieEquipamentoFiscal(venda.getNumSerie());
-		logVendaPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
+            logVendaPassagem.setNumeroSerieEquipamentoFiscal(NUM_SERIE_FIXO);
+            logVendaPassagem.setNumeroBilheteEmbarque(vendasUtil.completaComZerosEsquerda(9, venda.getNumBilheteEstado()));
+        }else{
+            logVendaPassagem.setNumeroSerieEquipamentoFiscal(venda.getNumSerie());
+            logVendaPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
+        }
+
+        if((null == venda.getNumBilheteEmbarque() || "".equals(venda.getNumBilheteEmbarque()))) {
+            logVendaPassagem.setNumeroBilheteEmbarque(vendasUtil.completaComZerosEsquerda(9, venda.getNumBilheteEstado()));
+        }else {
+            logVendaPassagem.setNumeroBilheteEmbarque(venda.getNumBilheteEmbarque());
+        }
 		logVendaPassagem.setDataEmissaoBilhete(vendasUtil.parseStringDateToUTC(venda.getDataEmissao()));
 		logVendaPassagem.setHoraEmissaoBilhete(vendasUtil.parseStringHourToUTC(venda.getHoraEmissao()));
 		logVendaPassagem.setCodigoCategoriaTransporte(venda.getCategoria());

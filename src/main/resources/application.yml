@@ -37,7 +37,7 @@ spring:
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
       dialect: org.hibernate.dialect.MySQL5Dialect
   rabbitmq:
-    addresses: 10.99.4.84
+    addresses: 172.18.107.169 #10.99.4.84
     port: 5672
     password: admin
     username: admin
@@ -52,9 +52,9 @@ logging:
   pattern:
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{0} - %msg%n'
 
-url-zona: http://zn4.m2mcontrol.com.br/#/
+url-zona: http://znd.m2mcontrol.com.br/#/
 
 lazypersistence:
-  database: monitriip_znh
+  database: monitriip_znd
 
 cod-cancelamento: 11
