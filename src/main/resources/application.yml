@@ -25,8 +25,8 @@ authentication:
 
 spring:
   datasource:
-    #url: jdbc:mysql://172.18.107.248:3306/sso?zeroDateTimeBehavior=convertToNull # ZNH
-    url: jdbc:mysql://172.18.107.238:3306/sso?zeroDateTimeBehavior=convertToNull # ZND
+    url: jdbc:mysql://172.18.107.248:3306/sso?zeroDateTimeBehavior=convertToNull # ZNH
+    #url: jdbc:mysql://172.18.107.238:3306/sso?zeroDateTimeBehavior=convertToNull # ZND
     #url: jdbc:mysql://m2m-zona01-mysql.crppdsnpjkxz.us-east-1.rds.amazonaws.com:3306/sso?zeroDateTimeBehavior=convertToNull # ZN4E5
     username: frota
     password: frota
@@ -40,7 +40,7 @@ spring:
       dialect: org.hibernate.dialect.MySQL5Dialect
   rabbitmq:
 
-    addresses: 172.18.107.169 # ZND | 10.99.4.84 ZN4 |ZN5 172.18.107.201 #ZNH
+    addresses: 172.18.107.201 #172.18.107.169 # ZND | 10.99.4.84 ZN4 |ZN5 172.18.107.201 #ZNH
     port: 5672
     password: admin
     username: admin
@@ -55,9 +55,9 @@ logging:
   pattern:
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{0} - %msg%n'
 
-url-zona: http://znd2.m2mcontrol.com.br/#/
+url-zona: http://znh.m2mcontrol.com.br/#/
 
 lazypersistence:
-  database: monitriip_znd
+  database: monitriip_znh
 
 cod-cancelamento: 11

@@ -94,11 +94,13 @@ public class ClienteRjConsultores {
 				TimeZone tz = TimeZone.getTimeZone(cliente.getDsTimezone());
 				TimeZone.setDefault(tz);
 				Calendar calendar = Calendar.getInstance(tz);
-				int horatz = calendar.get(Calendar.HOUR_OF_DAY);
+				int horaTZ = calendar.get(Calendar.HOUR_OF_DAY);
+				int minutosTZ = calendar.get(Calendar.MINUTE);
 				calendar.setTime(data);
-				int hora = calendar.get(Calendar.HOUR_OF_DAY);
-				if (hora != horatz){
-					calendar.set(Calendar.HOUR_OF_DAY, horatz);
+				int horaBanco = calendar.get(Calendar.HOUR_OF_DAY);
+				if (horaBanco != horaTZ){
+					calendar.set(Calendar.HOUR_OF_DAY, horaTZ);
+					calendar.set(Calendar.MINUTE, minutosTZ);
 				}
 				calendar.add(Calendar.MINUTE,1);
 				dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
