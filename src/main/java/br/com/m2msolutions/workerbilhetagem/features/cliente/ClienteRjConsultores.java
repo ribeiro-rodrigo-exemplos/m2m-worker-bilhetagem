@@ -1,5 +1,6 @@
 package br.com.m2msolutions.workerbilhetagem.features.cliente;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,6 +37,9 @@ public class ClienteRjConsultores {
 
 	@Transient
 	private final static String datePattern = "yyyy-MM-dd HH:mm:ss";
+
+	@Transient
+	private final static String dateFormatPattern = "yyyy-MM-dd";
 
 	public ClienteRjConsultores() {
 	}
@@ -91,17 +95,39 @@ public class ClienteRjConsultores {
 			if(dataEnvio != null){
 				Date data = new SimpleDateFormat(datePattern).parse(dataEnvio);
 
+				//Timezone
 				TimeZone tz = TimeZone.getTimeZone(cliente.getDsTimezone());
 				TimeZone.setDefault(tz);
 				Calendar calendar = Calendar.getInstance(tz);
+
+				//Data  e hora com base no Timezone
+				Date dateNow =  calendar.getTime();
+				SimpleDateFormat sdfNow = new SimpleDateFormat(dateFormatPattern);
+				String dateFormatNow = sdfNow.format(dateNow);
+				int anoTZ = calendar.get(Calendar.YEAR);
+				int mesTZ = calendar.get(Calendar.MONTH);
+				int diaTZ = calendar.get(calendar.DAY_OF_MONTH);
 				int horaTZ = calendar.get(Calendar.HOUR_OF_DAY);
 				int minutosTZ = calendar.get(Calendar.MINUTE);
+
+				//Data e hora com base no banco
 				calendar.setTime(data);
+				SimpleDateFormat sdfDataEnvio = new SimpleDateFormat(dateFormatPattern);
+				String dateFormat = sdfDataEnvio.format(data);
 				int horaBanco = calendar.get(Calendar.HOUR_OF_DAY);
+
+				if(!dateFormat.equals(dateFormatNow)){
+					calendar.set(Calendar.YEAR, anoTZ);
+					calendar.set(Calendar.MONTH, mesTZ);
+					calendar.set(Calendar.DAY_OF_MONTH, diaTZ);
+
+				}
+
 				if (horaBanco != horaTZ){
 					calendar.set(Calendar.HOUR_OF_DAY, horaTZ);
 					calendar.set(Calendar.MINUTE, minutosTZ);
 				}
+
 				calendar.add(Calendar.MINUTE,1);
 				dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
 			}
