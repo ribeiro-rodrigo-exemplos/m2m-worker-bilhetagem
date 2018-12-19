@@ -108,6 +108,7 @@ public class ClienteRjConsultores {
 				int diaTZ = calendar.get(calendar.DAY_OF_MONTH);
 				int horaTZ = calendar.get(Calendar.HOUR_OF_DAY);
 				int minutosTZ = calendar.get(Calendar.MINUTE);
+				int segundosTZ =  calendar.get(Calendar.SECOND);
 
 				//Data e hora com base no banco
 				calendar.setTime(data);
@@ -125,7 +126,9 @@ public class ClienteRjConsultores {
 				if (horaBanco != horaTZ){
 					calendar.set(Calendar.HOUR_OF_DAY, horaTZ);
 					calendar.set(Calendar.MINUTE, minutosTZ);
+					calendar.set(Calendar.SECOND, segundosTZ);
 				}
+
 
 				calendar.add(Calendar.MINUTE,1);
 				dataEnvio = new SimpleDateFormat(datePattern).format(calendar.getTime());
